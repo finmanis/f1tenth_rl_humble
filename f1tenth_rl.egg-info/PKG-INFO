@@ -1,0 +1,27 @@
+Metadata-Version: 2.4
+Name: f1tenth_rl
+Version: 1.0.0
+Summary: Modular RL training framework for F1TENTH autonomous racing
+Requires-Python: >=3.8
+Requires-Dist: numpy>=1.24.0
+Requires-Dist: scipy>=1.10.0
+Requires-Dist: PyYAML>=6.0
+Requires-Dist: gymnasium>=0.28.0
+Requires-Dist: torch>=2.0.0
+Requires-Dist: stable-baselines3[extra]>=2.1.0
+Requires-Dist: tensorboard>=2.14.0
+Requires-Dist: matplotlib>=3.7.0
+Requires-Dist: tqdm>=4.65.0
+Requires-Dist: rich>=13.0.0
+Requires-Dist: Pillow>=9.5.0
+Requires-Dist: scikit-image>=0.21.0
+Requires-Dist: opencv-python>=4.8.0
+Provides-Extra: wandb
+Requires-Dist: wandb>=0.15.0; extra == "wandb"
+Provides-Extra: onnx
+Requires-Dist: onnx>=1.14.0; extra == "onnx"
+Requires-Dist: onnxruntime>=1.15.0; extra == "onnx"
+Dynamic: provides-extra
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary

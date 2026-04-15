@@ -1,0 +1,3 @@
+[console_scripts]
+f1tenth-eval = scripts.evaluate:main
+f1tenth-train = scripts.train:main

@@ -219,6 +219,55 @@ class SpeedReward(RewardFunction):
         return self.speed_weight * max(0, float(obs_dict["linear_vels_x"][ego_idx]))
 
 
+class customReward(RewardFunction):
+    """
+    A Hybrid Reward Function combining Progress, CTH, and Speed.
+    Inherits collision, lap, and smoothness logic from RewardFunction.
+    """
+
+    def __init__(self, config: Dict[str, Any], waypoints: np.ndarray):
+        super().__init__(config)
+        
+        # 1. Initialize sub-components
+        self.progress_comp = ProgressReward(config, waypoints)
+        self.cth_comp      = CTHReward(config, waypoints)
+        self.speed_comp    = SpeedReward(config, waypoints)
+        
+        # 2. Define weights for the hybrid calculation
+        # These can be passed in via your config dictionary
+        self.w_progress = config.get("w_progress", 1.0)
+        self.w_cth      = config.get("w_cth", 1.0)
+        self.w_speed    = config.get("w_speed", 1.0)
+
+    def _reset_impl(self, obs_dict: Dict, ego_idx: int):
+        """Called at the start of every episode to sync state."""
+        self.progress_comp.reset(obs_dict, ego_idx)
+        self.cth_comp.reset(obs_dict, ego_idx)
+        self.speed_comp.reset(obs_dict, ego_idx)
+        self._progress = 0.0
+
+    def _compute_impl(self, obs_dict: Dict, ego_idx: int, action: np.ndarray) -> float:
+        """Calculates the weighted driving reward."""
+        
+        # A. Get the 'raw' rewards from the components
+        # We call _compute_impl to get just the logic, not the base penalties
+        r_prog  = self.progress_comp._compute_impl(obs_dict, ego_idx, action)
+        r_cth   = self.cth_comp._compute_impl(obs_dict, ego_idx, action)
+        r_speed = self.speed_comp._compute_impl(obs_dict, ego_idx, action)
+
+        # B. Combine them using the weights
+        # Logic: Reward = (w1 * Progress) + (w2 * CTH) + (w3 * Speed)
+        hybrid_reward = (
+            (self.w_progress * r_prog) + 
+            (self.w_cth      * r_cth)  + 
+            (self.w_speed    * r_speed)
+        )
+
+        # C. Update the master progress tracker for logging
+        self._progress = self.progress_comp.get_progress()
+
+        return hybrid_reward
+
 # ============================================================
 # Waypoint loading (file-based fallback)
 # ============================================================
