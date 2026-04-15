@@ -219,7 +219,7 @@ class SpeedReward(RewardFunction):
         return self.speed_weight * max(0, float(obs_dict["linear_vels_x"][ego_idx]))
 
 
-class customReward(RewardFunction):
+class CustomReward(RewardFunction):
     def __init__(self, config: Dict[str, Any], waypoints: np.ndarray):
         super().__init__(config)
         self.progress_comp = ProgressReward(config, waypoints)

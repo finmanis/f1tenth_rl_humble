@@ -36,7 +36,7 @@ from pathlib import Path
 from typing import Optional, Dict, Any, Callable, Tuple
 
 from f1tenth_rl.envs.observations import ObservationBuilder
-from f1tenth_rl.envs.rewards import ProgressReward, CTHReward, SpeedReward
+from f1tenth_rl.envs.rewards import ProgressReward, CTHReward, SpeedReward, CustomReward
 from f1tenth_rl.envs.domain_randomization import DomainRandomizationWrapper
 
 
@@ -346,6 +346,8 @@ class F1TenthWrapper(gym.Env):
             return CTHReward(rew_cfg, wp)
         elif reward_type == "speed":
             return SpeedReward(rew_cfg, wp)
+        elif reward_type == "custom":
+            return CustomReward(rew_cfg, wp)
         else:
             return ProgressReward(rew_cfg, wp)
 

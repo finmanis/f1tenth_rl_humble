@@ -1,0 +1,135 @@
+# ===================================================================
+# Multi-Agent: RL vs Pure Pursuit Opponent
+# ===================================================================
+#
+# Two cars on the track: your RL agent (ego) vs a pure pursuit bot.
+# The pure pursuit opponent follows the centerline at a fixed speed.
+# Your agent needs to learn two things at once:
+#   1. How to drive fast around the track
+#   2. How to avoid crashing into the opponent
+#
+# The lidar naturally "sees" the opponent car as an obstacle — no
+# special detection code needed. When the opponent blocks the path,
+# the agent must learn to slow down, wait, or find a gap to pass.
+#
+# This is a good stepping stone before self-play, because the opponent
+# is predictable (same speed, same path every time).
+#
+# Usage:
+#   python scripts/train.py --config configs/multi_agent_vs_pp.yaml \
+#       --map maps/levine_slam/levine_slam --num-envs 8 --device cuda
+# ===================================================================
+
+experiment:
+  name: "multi_pp"
+  seed: 42
+  device: "auto"
+  runs_dir: "runs"
+  wandb: true
+  wandb_project: "f1tenth_rl"
+
+env:
+  map_path: "maps/levine_slam/levine_slam"
+  map_ext: ".png"
+  num_agents: 2                # Two cars on the track
+  timestep: 0.01
+  integrator: "rk4"
+  num_envs: 8
+  max_steps: 3000
+  num_laps: 1
+
+# Tell the framework to use a pure pursuit bot as the opponent
+multi_agent:
+  opponent: "pure_pursuit"
+
+lidar:
+  raw_beams: 1080
+  fov_deg: 270.0
+  range_max: 30.0
+
+observation:
+  type: "lidar_state"
+  lidar_beams: 108
+  lidar_clip: 10.0
+  lidar_normalize: true
+  include_velocity: true
+  include_yaw_rate: true
+  include_prev_action: true
+  frame_stack: 1
+
+action:
+  type: "continuous"
+  max_speed: 3.5               # Faster than the opponent (3 m/s) so we can overtake
+  min_speed: 0.5
+  max_steer: 0.4189
+  smoothing_alpha: 0.3
+
+reward:
+  type: "custom"
+  # --- Global Penalties (handled by base class) ---
+  collision_penalty: -20.0      # Increased: crashing into the opponent should be very costly
+  lap_bonus: 20.0               # Increased: reward for successful overtaking and finishing
+  survival_reward: 0.01
+  steering_change_penalty: 0.5
+  wall_proximity_penalty: 0.5
+  wall_proximity_threshold: 0.3
+
+  # --- Hybrid Component Weights (w_progress, w_cth, w_speed) ---
+  w_progress: 1.0               # Focus on moving forward
+  w_cth: 0.5                    # Medium focus on staying on the raceline
+  w_speed: 0.2                  # Bonus for raw speed
+  
+  # --- Sub-Component Tuning ---
+  progress_weight: 10.0         # Internal multiplier for ProgressReward
+  heading_weight: 0.2           # Internal multiplier for CTH
+  crosstrack_weight: 0.1        # Internal multiplier for CTH
+  speed_weight: 0.1             # Internal multiplier for SpeedReward
+
+  # --- Obstacle Avoidance (New) ---
+  obstacle_penalty: 10.0        # Penalty for tailgating/getting too close to opponent
+  obstacle_distance_threshold: 1.5
+  obstacle_cone_degrees: 30
+
+algorithm:
+  type: "ppo"
+  total_timesteps: 3_000_000
+  ppo:
+    learning_rate: 0.0003
+    n_steps: 2048
+    batch_size: 256
+    n_epochs: 10
+    gamma: 0.99
+    gae_lambda: 0.95
+    clip_range: 0.2
+    ent_coef: 0.001
+    vf_coef: 0.5
+    max_grad_norm: 0.5
+
+network:
+  type: "mlp"
+  mlp:
+    hidden_sizes: [128, 128]
+    activation: "relu"
+  pi_layers: [64, 64]
+  vf_layers: [64, 64]
+
+domain_randomization:
+  enabled: true
+  mode: "curriculum"
+  curriculum_warmup: 0.2
+  curriculum_full: 0.6
+  friction: { enabled: true, range: [0.7, 1.3] }
+  mass: { enabled: true, range: [3.2, 4.2] }
+  lidar_noise: { enabled: true, std: 0.04 }
+
+expert:
+  pure_pursuit:
+    target_speed: 3.0          # Opponent speed — ego should be faster
+
+evaluation:
+  eval_freq: 100000
+  n_eval_episodes: 10
+  deterministic: true
+
+callbacks:
+  checkpoint_freq: 100000
