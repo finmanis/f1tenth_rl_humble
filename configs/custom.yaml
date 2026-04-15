@@ -34,7 +34,7 @@ env:
   num_agents: 2                # Two cars on the track
   timestep: 0.01
   integrator: "rk4"
-  num_envs: 8
+  num_envs: 4
   max_steps: 3000
   num_laps: 1
 
@@ -92,7 +92,7 @@ reward:
 
 algorithm:
   type: "ppo"
-  total_timesteps: 3_000_000
+  total_timesteps: 500_000
   ppo:
     learning_rate: 0.0003
     n_steps: 2048

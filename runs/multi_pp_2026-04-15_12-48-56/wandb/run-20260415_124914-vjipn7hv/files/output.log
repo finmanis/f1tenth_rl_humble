@@ -1,4 +1,0 @@
-[34m[1mwandb[0m: [33mWARNING[0m The get_url method is deprecated and will be removed in a future release. Please use `run.url` instead.
-  WandB run: https://wandb.ai/finnman-penn/f1tenth_rl/runs/vjipn7hv
-Logging to runs/multi_pp_2026-04-15_12-48-56/tensorboard/PPO_1
-[2K[35m   0%[0m [38;5;237m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m0/3,000,000 [0m [ [33m0:01:39[0m < [36m-:--:--[0m , [31m? it/s[0m ]
