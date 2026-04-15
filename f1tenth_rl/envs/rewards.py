@@ -220,53 +220,71 @@ class SpeedReward(RewardFunction):
 
 
 class customReward(RewardFunction):
-    """
-    A Hybrid Reward Function combining Progress, CTH, and Speed.
-    Inherits collision, lap, and smoothness logic from RewardFunction.
-    """
-
     def __init__(self, config: Dict[str, Any], waypoints: np.ndarray):
         super().__init__(config)
-        
-        # 1. Initialize sub-components
         self.progress_comp = ProgressReward(config, waypoints)
         self.cth_comp      = CTHReward(config, waypoints)
         self.speed_comp    = SpeedReward(config, waypoints)
         
-        # 2. Define weights for the hybrid calculation
-        # These can be passed in via your config dictionary
         self.w_progress = config.get("w_progress", 1.0)
         self.w_cth      = config.get("w_cth", 1.0)
         self.w_speed    = config.get("w_speed", 1.0)
 
+        # New Obstacle Parameters
+        self.obs_penalty = config.get("obstacle_penalty", 5.0)  # Total penalty value
+        self.obs_dist    = config.get("obstacle_distance_threshold", 1.5)
+        self.obs_cone    = config.get("obstacle_cone_degrees", 30)
+
     def _reset_impl(self, obs_dict: Dict, ego_idx: int):
-        """Called at the start of every episode to sync state."""
         self.progress_comp.reset(obs_dict, ego_idx)
         self.cth_comp.reset(obs_dict, ego_idx)
         self.speed_comp.reset(obs_dict, ego_idx)
         self._progress = 0.0
 
     def _compute_impl(self, obs_dict: Dict, ego_idx: int, action: np.ndarray) -> float:
-        """Calculates the weighted driving reward."""
-        
-        # A. Get the 'raw' rewards from the components
-        # We call _compute_impl to get just the logic, not the base penalties
+        # 1. Base Hybrid Rewards
         r_prog  = self.progress_comp._compute_impl(obs_dict, ego_idx, action)
         r_cth   = self.cth_comp._compute_impl(obs_dict, ego_idx, action)
         r_speed = self.speed_comp._compute_impl(obs_dict, ego_idx, action)
 
-        # B. Combine them using the weights
-        # Logic: Reward = (w1 * Progress) + (w2 * CTH) + (w3 * Speed)
-        hybrid_reward = (
+        # 2. Obstacle Detection Logic (Frontal Cone)
+        scan = obs_dict["scans"][ego_idx]
+        num_rays = len(scan)
+        
+        # Assuming the scan covers 270 degrees (-135 to +135)
+        # We calculate how many array indices represent our 30-degree cone
+        # (30 degrees / 270 degrees) * total_rays
+        total_fov = 270
+        rays_per_degree = num_rays / total_fov
+        cone_width = int(self.obs_cone * rays_per_degree)
+        
+        # Slice the middle of the LIDAR array
+        mid = num_rays // 2
+        start_idx = mid - (cone_width // 2)
+        end_idx = mid + (cone_width // 2)
+        front_cone = scan[start_idx:end_idx]
+
+        # Check for obstacles
+        min_front_dist = np.min(front_cone)
+        r_obstacle = 0.0
+        
+        if min_front_dist < self.obs_dist:
+            # Linear penalty: the closer it is, the higher the penalty
+            # Scaling it from 0 (at 1.5m) to 1.0 (at 0m)
+            severity = 1.0 - (min_front_dist / self.obs_dist)
+            r_obstacle = -(self.obs_penalty * severity)
+
+        # 3. Combine everything
+        total_reward = (
             (self.w_progress * r_prog) + 
             (self.w_cth      * r_cth)  + 
-            (self.w_speed    * r_speed)
+            (self.w_speed    * r_speed) +
+            r_obstacle # Add the negative penalty
         )
 
-        # C. Update the master progress tracker for logging
         self._progress = self.progress_comp.get_progress()
+        return total_reward
 
-        return hybrid_reward
 
 # ============================================================
 # Waypoint loading (file-based fallback)
