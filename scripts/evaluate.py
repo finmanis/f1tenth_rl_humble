@@ -33,53 +33,6 @@ import time
 from pathlib import Path
 from collections import defaultdict
 
-import foxglove
-from foxglove.messages import LaserScan, PoseInFrame, Vector3, Quaternion
-
-class FoxgloveLogger:
-    def __init__(self, filename="eval_run.mcap"):
-        # This opens the MCAP file for recording
-        self.mcap = foxglove.open_mcap(filename)
-        self.mcap.__enter__() # Manually enter the context
-
-    def log_step(self, obs, info):
-        # 1. Log Ego Pose (The RL Car)
-        theta = info['poses_theta']
-        foxglove.log("/ego_pose", PoseInFrame(
-            timestamp=None, # SDK automatically uses current time
-            frame_id="map",
-            pose={
-                "position": Vector3(x=info['poses_x'], y=info['poses_y'], z=0),
-                "orientation": Quaternion(x=0, y=0, z=np.sin(theta/2), w=np.cos(theta/2))
-            }
-        ))
-
-        # 2. Log Opponent Pose (The Pure Pursuit Bot)
-        # Assuming index 1 is the opponent in your multi-agent setup
-        opp_theta = info['poses_theta']
-        foxglove.log("/opponent_pose", PoseInFrame(
-            timestamp=None,
-            frame_id="map",
-            pose={
-                "position": Vector3(x=info['poses_x'], y=info['poses_y'], z=0),
-                "orientation": Quaternion(x=0, y=0, z=np.sin(opp_theta/2), w=np.cos(opp_theta/2))
-            }
-        ))
-
-        # 3. Log LIDAR (The 30-degree cone)
-        scan = obs['scan'] if isinstance(obs, dict) else obs
-        foxglove.log("/scan", LaserScan(
-            timestamp=None,
-            frame_id="ego_pose",
-            pose={"position": Vector3(x=0, y=0, z=0), "orientation": Quaternion(x=0, y=0, z=0, w=1)},
-            start_angle=-135 * (np.pi / 180),
-            end_angle=135 * (np.pi / 180),
-            ranges=scan.tolist()
-        ))
-
-    def close(self):
-        self.mcap.__exit__(None, None, None)
-
 project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root))
 
@@ -152,8 +105,6 @@ def evaluate_model(model_path, config, norm_path, args):
     print(f"  Episodes:  {args.episodes}")
     print("-" * 50)
 
-    logger = FoxgloveLogger("eval_run.mcap")
-
     for ep in range(args.episodes):
         obs, info = env.reset()
         episode_return = 0
@@ -164,7 +115,6 @@ def evaluate_model(model_path, config, norm_path, args):
         while not done:
             # Normalize obs if we have stats
             obs, reward, terminated, truncated, info = env.step(action)
-            logger.log_step(obs, info)
             obs_input = obs
             if obs_rms is not None:
                 obs_input = (obs - obs_rms.mean) / np.sqrt(obs_rms.var + 1e-8)
@@ -344,9 +294,6 @@ def evaluate_bc_model(bc_model_path, config, args):
             if args.render:
                 env.render()
                 time.sleep(0.005)
-            
-            if args.save_mcap:
-                logger.log_step(obs, info)
 
         metrics["return"].append(episode_return)
         metrics["length"].append(info.get("episode_steps", 0))
@@ -383,7 +330,6 @@ def main():
     parser.add_argument("--export-onnx", action="store_true")
     parser.add_argument("--plot", action="store_true")
     parser.add_argument("--save-plot", type=str, default=None)
-    parser.add_argument("--save-mcap", action="store_true", help="Record to Foxglove MCAP")
     args = parser.parse_args()
 
     # ---- BC model evaluation ----
@@ -424,8 +370,6 @@ def main():
 
     if (args.plot or args.save_plot) and all_metrics:
         plot_results(all_metrics, names, args.save_plot)
-
-    logger.close()
 
 
 if __name__ == "__main__":
