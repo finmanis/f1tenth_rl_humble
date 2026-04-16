@@ -231,7 +231,7 @@ class CustomReward(RewardFunction):
         self.w_speed    = config.get("w_speed", 1.0)
 
         # New Obstacle Parameters
-        self.obs_penalty = config.get("obstacle_penalty", 5.0)  # Total penalty value
+        self.obs_penalty = config.get("obstacle_penalty", -5.0)  # Total penalty value
         self.obs_dist    = config.get("obstacle_distance_threshold", 1.5)
         self.obs_cone    = config.get("obstacle_cone_degrees", 30)
 
@@ -272,7 +272,7 @@ class CustomReward(RewardFunction):
             # Linear penalty: the closer it is, the higher the penalty
             # Scaling it from 0 (at 1.5m) to 1.0 (at 0m)
             severity = 1.0 - (min_front_dist / self.obs_dist)
-            r_obstacle = -(self.obs_penalty * severity)
+            r_obstacle = self.obs_penalty * severity
 
         # 3. Combine everything
         total_reward = (
@@ -322,4 +322,6 @@ def make_reward_function(config: Dict[str, Any], map_path: str) -> RewardFunctio
         return CTHReward(config, wp)
     elif reward_type == "speed":
         return SpeedReward(config, wp)
+    elif reward_type == "custom":
+        return CustomReward(config,wp)
     return ProgressReward(config, wp)

@@ -114,7 +114,6 @@ def evaluate_model(model_path, config, norm_path, args):
 
         while not done:
             # Normalize obs if we have stats
-            obs, reward, terminated, truncated, info = env.step(action)
             obs_input = obs
             if obs_rms is not None:
                 obs_input = (obs - obs_rms.mean) / np.sqrt(obs_rms.var + 1e-8)
@@ -280,16 +279,24 @@ def evaluate_bc_model(bc_model_path, config, args):
         done = False
 
         while not done:
-            with torch.no_grad():
-                obs_t = torch.FloatTensor(obs).unsqueeze(0)
-                action = model(obs_t).numpy().squeeze()
+            # 1. Normalize Observation
+            obs_input = obs
+            if obs_rms is not None:
+                obs_input = (obs - obs_rms.mean) / np.sqrt(obs_rms.var + 1e-8)
+                obs_input = np.clip(obs_input, -10.0, 10.0).astype(np.float32)
 
+            # 2. Predict Action
+            action, _ = model.predict(obs_input, deterministic=True)
+
+            print("action obtained: ")
+
+            # 3. Step Environment
             obs, reward, terminated, truncated, info = env.step(action)
             episode_return += reward
             done = terminated or truncated
 
             speeds.append(info.get("ego_speed", 0))
-            steers.append(abs(info.get("physical_action", [0, 0])[0]))
+            steers.append(abs(info.get("physical_action",)))
 
             if args.render:
                 env.render()

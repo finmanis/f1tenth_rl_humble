@@ -77,22 +77,22 @@ reward:
   # --- Hybrid Component Weights (w_progress, w_cth, w_speed) ---
   w_progress: 1.0               # Focus on moving forward
   w_cth: 0.5                    # Medium focus on staying on the raceline
-  w_speed: 0.2                  # Bonus for raw speed
+  w_speed: 0.3                  # Bonus for raw speed
   
   # --- Sub-Component Tuning ---
   progress_weight: 10.0         # Internal multiplier for ProgressReward
-  heading_weight: 0.2           # Internal multiplier for CTH
-  crosstrack_weight: 0.1        # Internal multiplier for CTH
-  speed_weight: 0.1             # Internal multiplier for SpeedReward
+  heading_weight: 1.0           # Internal multiplier for CTH
+  crosstrack_weight: 0.3        # Internal multiplier for CTH
+  speed_weight: 0.3             # Internal multiplier for SpeedReward
 
   # --- Obstacle Avoidance (New) ---
-  obstacle_penalty: 10.0        # Penalty for tailgating/getting too close to opponent
+  obstacle_penalty: -5.0        # Penalty for tailgating/getting too close to opponent
   obstacle_distance_threshold: 1.5
   obstacle_cone_degrees: 30
 
 algorithm:
   type: "ppo"
-  total_timesteps: 500_000
+  total_timesteps: 2_000_000
   ppo:
     learning_rate: 0.0003
     n_steps: 2048
