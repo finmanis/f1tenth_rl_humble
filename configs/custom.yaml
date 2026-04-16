@@ -65,7 +65,7 @@ observation:
 
 action:
   type: "continuous"
-  max_speed: 3.5               # Faster than the opponent (3 m/s) so we can overtake
+  max_speed: 6.0               # Faster than the opponent (3 m/s) so we can overtake
   min_speed: 0.5
   max_steer: 0.4189
   smoothing_alpha: 0.3
@@ -129,7 +129,7 @@ domain_randomization:
 
 expert:
   pure_pursuit:
-    target_speed: 3.0          # Opponent speed — ego should be faster
+    target_speed: 5.5          # Opponent speed — ego should be faster
 
 evaluation:
   eval_freq: 100000
