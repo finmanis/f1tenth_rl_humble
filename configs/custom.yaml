@@ -29,7 +29,7 @@ experiment:
   wandb_project: "f1tenth_rl"
 
 env:
-  map_path: "maps/levine_slam/levine_slam"
+  map_path: "maps/spielberg/spielberg"
   map_ext: ".png"
   num_agents: 2                # Two cars on the track
   timestep: 0.01

@@ -1,0 +1,187 @@
+_wandb:
+    value:
+        cli_version: 0.26.0
+        code_path: code/scripts/train.py
+        e:
+            sxci2r7pjgm9bsr0tls3ln35q7f6epp6:
+                args:
+                    - --config
+                    - configs/custom.yaml
+                codePath: scripts/train.py
+                codePathLocal: scripts/train.py
+                cpu_count: 1
+                cpu_count_logical: 1
+                disk:
+                    /:
+                        total: "62242217984"
+                        used: "18668904448"
+                email: finnman@seas.upenn.edu
+                executable: /home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/bin/python3
+                git:
+                    commit: 1667a5f3eab8db40463b1adebac5a8a5a1de1b57
+                    remote: https://github.com/finmanis/f1tenth_rl_humble.git
+                host: f1tenth
+                memory:
+                    total: "4100624384"
+                os: Linux-5.15.0-174-generic-aarch64-with-glibc2.35
+                program: /home/ubuntu/f1tenth_rl/scripts/train.py
+                python: CPython 3.10.12
+                root: runs/multi_pp_2026-04-16_09-16-07
+                startedAt: "2026-04-16T13:16:33.670297Z"
+                writerId: sxci2r7pjgm9bsr0tls3ln35q7f6epp6
+        m: []
+        python_version: 3.10.12
+        t:
+            "1":
+                - 1
+            "2":
+                - 1
+            "3":
+                - 2
+                - 13
+                - 15
+                - 16
+                - 35
+                - 41
+                - 61
+                - 62
+            "4": 3.10.12
+            "5": 0.26.0
+            "10":
+                - 21
+            "12": 0.26.0
+            "13": linux-aarch64
+act_dim:
+    value: 2
+action:
+    value:
+        max_speed: 3.5
+        max_steer: 0.4189
+        min_speed: 0.5
+        smoothing_alpha: 0.3
+        type: continuous
+algorithm:
+    value:
+        ppo:
+            batch_size: 256
+            clip_range: 0.2
+            ent_coef: 0.001
+            gae_lambda: 0.95
+            gamma: 0.99
+            learning_rate: 0.0003
+            max_grad_norm: 0.5
+            n_epochs: 10
+            n_steps: 2048
+            vf_coef: 0.5
+        total_timesteps: 2000000
+        type: ppo
+callbacks:
+    value:
+        checkpoint_freq: 100000
+domain_randomization:
+    value:
+        curriculum_full: 0.6
+        curriculum_warmup: 0.2
+        enabled: true
+        friction:
+            enabled: true
+            range:
+                - 0.7
+                - 1.3
+        lidar_noise:
+            enabled: true
+            std: 0.04
+        mass:
+            enabled: true
+            range:
+                - 3.2
+                - 4.2
+        mode: curriculum
+env:
+    value:
+        integrator: rk4
+        map_ext: .png
+        map_path: maps/spielberg/spielberg
+        max_steps: 1500
+        num_agents: 2
+        num_envs: 4
+        num_laps: 999
+        timestep: 0.01
+evaluation:
+    value:
+        deterministic: true
+        eval_freq: 100000
+        n_eval_episodes: 10
+experiment:
+    value:
+        device: auto
+        name: multi_pp
+        runs_dir: runs
+        seed: 42
+        wandb: true
+        wandb_project: f1tenth_rl
+expert:
+    value:
+        pure_pursuit:
+            target_speed: 3
+lidar:
+    value:
+        fov_deg: 270
+        range_max: 30
+        raw_beams: 1080
+multi_agent:
+    value:
+        opponent: pure_pursuit
+network:
+    value:
+        mlp:
+            activation: relu
+            hidden_sizes:
+                - 128
+                - 128
+        pi_layers:
+            - 64
+            - 64
+        type: mlp
+        vf_layers:
+            - 64
+            - 64
+num_envs:
+    value: 4
+obs_dim:
+    value: 112
+observation:
+    value:
+        frame_stack: 1
+        include_prev_action: true
+        include_velocity: true
+        include_yaw_rate: true
+        lidar_beams: 108
+        lidar_clip: 10
+        lidar_normalize: true
+        type: lidar_state
+reward:
+    value:
+        collision_penalty: -30
+        crosstrack_weight: 0.3
+        heading_weight: 1
+        lap_bonus: 0
+        overtake_bonus: 50
+        progress_weight: 10
+        speed_weight: 0.3
+        steering_change_penalty: 0.5
+        survival_reward: 0.01
+        type: custom
+        w_cth: 0.5
+        w_progress: 1
+        w_relative: 2
+        w_speed: 0.3
+        wall_proximity_penalty: 0.5
+        wall_proximity_threshold: 0.3
+run_dir:
+    value: runs/multi_pp_2026-04-16_09-16-07
+spawn:
+    value:
+        initial_speed: 2
+        opponent_offset_max: 2.5
+        opponent_offset_min: 1
