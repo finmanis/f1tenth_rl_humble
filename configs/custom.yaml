@@ -35,8 +35,14 @@ env:
   timestep: 0.01
   integrator: "rk4"
   num_envs: 4
-  max_steps: 3000
-  num_laps: 1
+  max_steps: 1500              # ~15 second episodes focused on a single overtake attempt
+  num_laps: 999                # Prevent lap-based termination; we terminate on overtake
+
+# Random spawn: ego at a random track position, opponent slightly ahead
+spawn:
+  opponent_offset_min: 3.0    # minimum meters opponent starts ahead of ego
+  opponent_offset_max: 10.0   # maximum meters opponent starts ahead of ego
+  initial_speed: 2.0          # m/s — both cars start at this velocity
 
 # Tell the framework to use a pure pursuit bot as the opponent
 multi_agent:
@@ -67,28 +73,27 @@ action:
 reward:
   type: "custom"
   # --- Global Penalties (handled by base class) ---
-  collision_penalty: -20.0      # Increased: crashing into the opponent should be very costly
-  lap_bonus: 20.0               # Increased: reward for successful overtaking and finishing
+  collision_penalty: -20.0      # Crashing into the opponent is very costly
+  lap_bonus: 0.0                # No lap completion; we end on overtake instead
   survival_reward: 0.01
   steering_change_penalty: 0.5
   wall_proximity_penalty: 0.5
   wall_proximity_threshold: 0.3
 
-  # --- Hybrid Component Weights (w_progress, w_cth, w_speed) ---
-  w_progress: 1.0               # Focus on moving forward
-  w_cth: 0.5                    # Medium focus on staying on the raceline
-  w_speed: 0.3                  # Bonus for raw speed
-  
+  # --- Hybrid Component Weights ---
+  w_progress: 1.0               # Move forward along track
+  w_cth: 0.5                    # Stay on line and point forward
+  w_speed: 0.3                  # Go fast
+  w_relative: 2.0               # Be further ahead than the opponent (continuous overtake signal)
+
   # --- Sub-Component Tuning ---
   progress_weight: 10.0         # Internal multiplier for ProgressReward
   heading_weight: 1.0           # Internal multiplier for CTH
   crosstrack_weight: 0.3        # Internal multiplier for CTH
   speed_weight: 0.3             # Internal multiplier for SpeedReward
 
-  # --- Obstacle Avoidance (New) ---
-  obstacle_penalty: -5.0        # Penalty for tailgating/getting too close to opponent
-  obstacle_distance_threshold: 1.5
-  obstacle_cone_degrees: 30
+  # --- Overtake Terminal Reward ---
+  overtake_bonus: 50.0          # Large reward when ego successfully passes the opponent
 
 algorithm:
   type: "ppo"

@@ -284,10 +284,27 @@ class F1TenthWrapper(gym.Env):
                     expert_wp, expert_cfg
                 )
 
+        # ---- Spawn config ----
+        self.spawn_cfg = config.get("spawn", {})
+        self._overtake_bonus = config["reward"].get("overtake_bonus", 50.0)
+
+        # ---- Precompute cumulative track distances for overtake detection ----
+        if self.waypoints is not None:
+            _wps = self.waypoints[:, :2]
+            _diffs = np.diff(_wps, axis=0)
+            _seg_lens = np.sqrt((_diffs ** 2).sum(axis=1))
+            self._track_cum_dist = np.concatenate([[0], np.cumsum(_seg_lens)])
+            self._track_total_len = float(self._track_cum_dist[-1])
+        else:
+            self._track_cum_dist = None
+            self._track_total_len = 0.0
+
         # ---- Episode state ----
         self.current_step = 0
         self.prev_action = np.zeros(2, dtype=np.float32)
         self.prev_obs_dict = None
+        self._episode_start_dist = 0.0
+        self._overtake_done = False
 
     def _get_waypoints(self, rew_cfg: Dict, env_cfg: Dict) -> Optional[np.ndarray]:
         """Extract waypoints: Track object first, then file fallback."""
@@ -350,6 +367,65 @@ class F1TenthWrapper(gym.Env):
             return CustomReward(rew_cfg, wp)
         else:
             return ProgressReward(rew_cfg, wp)
+
+    def _get_track_dist(self, x: float, y: float) -> float:
+        """Cumulative distance along track to the nearest waypoint."""
+        wps = self.waypoints[:, :2]
+        dists = np.sqrt((wps[:, 0] - x) ** 2 + (wps[:, 1] - y) ** 2)
+        return float(self._track_cum_dist[np.argmin(dists)])
+
+    def _compute_spawn_states(self) -> np.ndarray:
+        """
+        Return (num_agents, 7) initial state array for the ST dynamic model.
+        ST state: [x, y, delta, v, psi, psi_dot, beta]
+        Ego is placed at a random waypoint; opponent is placed a random distance ahead.
+        Both start at initial_speed.
+        """
+        wps = self.waypoints[:, :2]
+        n = len(wps)
+
+        ego_wp = int(self.np_random.integers(0, n))
+
+        offset_m = float(self.np_random.uniform(
+            self.spawn_cfg.get("opponent_offset_min", 3.0),
+            self.spawn_cfg.get("opponent_offset_max", 10.0),
+        ))
+
+        # Walk forward along waypoints until cumulative distance >= offset_m
+        opp_wp, dist_acc = ego_wp, 0.0
+        for _ in range(n):
+            nxt = (opp_wp + 1) % n
+            dist_acc += float(np.sqrt(((wps[nxt] - wps[opp_wp]) ** 2).sum()))
+            opp_wp = nxt
+            if dist_acc >= offset_m:
+                break
+
+        def heading(idx: int) -> float:
+            nxt = (idx + 1) % n
+            return float(np.arctan2(wps[nxt, 1] - wps[idx, 1], wps[nxt, 0] - wps[idx, 0]))
+
+        v0 = float(self.spawn_cfg.get("initial_speed", 2.0))
+        states = np.zeros((self.num_agents, 7), dtype=np.float64)
+        states[self.ego_idx] = [wps[ego_wp, 0], wps[ego_wp, 1], 0.0, v0, heading(ego_wp), 0.0, 0.0]
+        opp_idx = 1 - self.ego_idx
+        states[opp_idx]      = [wps[opp_wp, 0], wps[opp_wp, 1], 0.0, v0, heading(opp_wp), 0.0, 0.0]
+        return states
+
+    def _check_overtake(self, flat_obs: Dict) -> bool:
+        """True if ego has passed the opponent by at least 0.5 m along the track."""
+        if self.num_agents < 2 or self._track_cum_dist is None or self._overtake_done:
+            return False
+        opp_idx = 1 - self.ego_idx
+        ego_d = self._get_track_dist(
+            float(flat_obs["poses_x"][self.ego_idx]), float(flat_obs["poses_y"][self.ego_idx])
+        )
+        opp_d = self._get_track_dist(
+            float(flat_obs["poses_x"][opp_idx]), float(flat_obs["poses_y"][opp_idx])
+        )
+        total = self._track_total_len
+        adj_ego = (ego_d - self._episode_start_dist) % total
+        adj_opp = (opp_d - self._episode_start_dist) % total
+        return adj_ego > adj_opp + 0.5
 
     def _create_base_env(self, env_cfg: Dict, render_mode: Optional[str]):
         """Create F1TENTH env using dev-humble EnvConfig."""
@@ -471,9 +547,16 @@ class F1TenthWrapper(gym.Env):
         super().reset(seed=seed)
 
         reset_options = dict(options) if options else {}
-        start_cfg = self.config["env"].get("start_pose", None)
-        if start_cfg is not None and "poses" not in reset_options:
-            reset_options["poses"] = np.array([start_cfg] * self.num_agents, dtype=np.float64)
+
+        # Random spawn with initial velocity via full-state initialization.
+        # Falls back to start_pose config if waypoints are unavailable.
+        if self.waypoints is not None and self._track_cum_dist is not None \
+                and "states" not in reset_options and "poses" not in reset_options:
+            reset_options["states"] = self._compute_spawn_states()
+        else:
+            start_cfg = self.config["env"].get("start_pose", None)
+            if start_cfg is not None and "poses" not in reset_options:
+                reset_options["poses"] = np.array([start_cfg] * self.num_agents, dtype=np.float64)
 
         if reset_options:
             raw_obs, info = self.base_env.reset(seed=seed, options=reset_options)
@@ -487,6 +570,14 @@ class F1TenthWrapper(gym.Env):
         self.prev_obs_dict = flat_obs
         self.obs_builder.reset()
         self.reward_fn.reset(flat_obs, self.ego_idx)
+
+        # Record ego's starting track position for overtake detection
+        self._overtake_done = False
+        if self._track_cum_dist is not None:
+            self._episode_start_dist = self._get_track_dist(
+                float(flat_obs["poses_x"][self.ego_idx]),
+                float(flat_obs["poses_y"][self.ego_idx]),
+            )
 
         observation = self.obs_builder.build(flat_obs, self.ego_idx, self.prev_action)
         info["raw_obs"] = flat_obs
@@ -517,6 +608,13 @@ class F1TenthWrapper(gym.Env):
             lap_complete=(ego_lap_count >= num_laps),
         )
 
+        # Overtake detection: terminate and award bonus when ego passes the opponent
+        overtake = self._check_overtake(flat_obs)
+        if overtake:
+            self._overtake_done = True
+            terminated = True
+            reward += self._overtake_bonus
+
         observation = self.obs_builder.build(flat_obs, self.ego_idx, self.prev_action)
         info.update({
             "raw_obs": flat_obs,
@@ -527,6 +625,7 @@ class F1TenthWrapper(gym.Env):
             "progress": self.reward_fn.get_progress(),
             "step": self.current_step,
             "physical_action": physical_action[self.ego_idx].copy(),
+            "overtake": overtake,
         })
         return observation, float(reward), terminated, truncated, info
 

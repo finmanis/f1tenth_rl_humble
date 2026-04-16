@@ -225,15 +225,15 @@ class CustomReward(RewardFunction):
         self.progress_comp = ProgressReward(config, waypoints)
         self.cth_comp      = CTHReward(config, waypoints)
         self.speed_comp    = SpeedReward(config, waypoints)
-        
+
         self.w_progress = config.get("w_progress", 1.0)
         self.w_cth      = config.get("w_cth", 1.0)
         self.w_speed    = config.get("w_speed", 1.0)
+        self.w_relative = config.get("w_relative", 2.0)
 
-        # New Obstacle Parameters
-        self.obs_penalty = config.get("obstacle_penalty", -5.0)  # Total penalty value
-        self.obs_dist    = config.get("obstacle_distance_threshold", 1.5)
-        self.obs_cone    = config.get("obstacle_cone_degrees", 30)
+        # Track episode start position for relative-progress reward
+        self._episode_start_ego_d = 0.0
+        self._opp_idx = 1
 
     def _reset_impl(self, obs_dict: Dict, ego_idx: int):
         self.progress_comp.reset(obs_dict, ego_idx)
@@ -241,45 +241,38 @@ class CustomReward(RewardFunction):
         self.speed_comp.reset(obs_dict, ego_idx)
         self._progress = 0.0
 
+        self._opp_idx = 1 - ego_idx
+        ego_x = float(obs_dict["poses_x"][ego_idx])
+        ego_y = float(obs_dict["poses_y"][ego_idx])
+        self._episode_start_ego_d = self.progress_comp._get_progress_dist(ego_x, ego_y)
+
     def _compute_impl(self, obs_dict: Dict, ego_idx: int, action: np.ndarray) -> float:
-        # 1. Base Hybrid Rewards
+        # 1. Base hybrid rewards
         r_prog  = self.progress_comp._compute_impl(obs_dict, ego_idx, action)
         r_cth   = self.cth_comp._compute_impl(obs_dict, ego_idx, action)
         r_speed = self.speed_comp._compute_impl(obs_dict, ego_idx, action)
 
-        # 2. Obstacle Detection Logic (Frontal Cone)
-        scan = obs_dict["scans"][ego_idx]
-        num_rays = len(scan)
-        
-        # Assuming the scan covers 270 degrees (-135 to +135)
-        # We calculate how many array indices represent our 30-degree cone
-        # (30 degrees / 270 degrees) * total_rays
-        total_fov = 270
-        rays_per_degree = num_rays / total_fov
-        cone_width = int(self.obs_cone * rays_per_degree)
-        
-        # Slice the middle of the LIDAR array
-        mid = num_rays // 2
-        start_idx = mid - (cone_width // 2)
-        end_idx = mid + (cone_width // 2)
-        front_cone = scan[start_idx:end_idx]
+        # 2. Relative-progress reward: positive when ego is ahead of opponent,
+        #    negative when behind — continuous incentive to close and pass
+        r_relative = 0.0
+        if len(obs_dict["poses_x"]) > 1:
+            ego_x = float(obs_dict["poses_x"][ego_idx])
+            ego_y = float(obs_dict["poses_y"][ego_idx])
+            opp_x = float(obs_dict["poses_x"][self._opp_idx])
+            opp_y = float(obs_dict["poses_y"][self._opp_idx])
+            total = self.progress_comp.total_length
+            ego_d = self.progress_comp._get_progress_dist(ego_x, ego_y)
+            opp_d = self.progress_comp._get_progress_dist(opp_x, opp_y)
+            adj_ego = (ego_d - self._episode_start_ego_d) % total
+            adj_opp = (opp_d - self._episode_start_ego_d) % total
+            r_relative = self.w_relative * (adj_ego - adj_opp) / total
 
-        # Check for obstacles
-        min_front_dist = np.min(front_cone)
-        r_obstacle = 0.0
-        
-        if min_front_dist < self.obs_dist:
-            # Linear penalty: the closer it is, the higher the penalty
-            # Scaling it from 0 (at 1.5m) to 1.0 (at 0m)
-            severity = 1.0 - (min_front_dist / self.obs_dist)
-            r_obstacle = self.obs_penalty * severity
-
-        # 3. Combine everything
+        # 3. Combine
         total_reward = (
-            (self.w_progress * r_prog) + 
-            (self.w_cth      * r_cth)  + 
-            (self.w_speed    * r_speed) +
-            r_obstacle # Add the negative penalty
+            self.w_progress * r_prog +
+            self.w_cth      * r_cth  +
+            self.w_speed    * r_speed +
+            r_relative
         )
 
         self._progress = self.progress_comp.get_progress()
