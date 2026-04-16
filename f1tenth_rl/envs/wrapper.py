@@ -425,7 +425,7 @@ class F1TenthWrapper(gym.Env):
         total = self._track_total_len
         adj_ego = (ego_d - self._episode_start_dist) % total
         adj_opp = (opp_d - self._episode_start_dist) % total
-        return adj_ego > adj_opp + 0.5
+        return adj_ego > adj_opp + 1.5
 
     def _create_base_env(self, env_cfg: Dict, render_mode: Optional[str]):
         """Create F1TENTH env using dev-humble EnvConfig."""

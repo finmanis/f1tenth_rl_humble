@@ -40,8 +40,8 @@ env:
 
 # Random spawn: ego at a random track position, opponent slightly ahead
 spawn:
-  opponent_offset_min: 3.0    # minimum meters opponent starts ahead of ego
-  opponent_offset_max: 10.0   # maximum meters opponent starts ahead of ego
+  opponent_offset_min: 1.0    # minimum meters opponent starts ahead of ego
+  opponent_offset_max: 2.5   # maximum meters opponent starts ahead of ego
   initial_speed: 2.0          # m/s — both cars start at this velocity
 
 # Tell the framework to use a pure pursuit bot as the opponent
@@ -73,7 +73,7 @@ action:
 reward:
   type: "custom"
   # --- Global Penalties (handled by base class) ---
-  collision_penalty: -20.0      # Crashing into the opponent is very costly
+  collision_penalty: -30.0      # Crashing into the opponent is very costly
   lap_bonus: 0.0                # No lap completion; we end on overtake instead
   survival_reward: 0.01
   steering_change_penalty: 0.5
