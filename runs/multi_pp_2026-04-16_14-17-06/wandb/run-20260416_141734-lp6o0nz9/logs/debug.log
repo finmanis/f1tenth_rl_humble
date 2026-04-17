@@ -1,0 +1,26 @@
+2026-04-16 14:17:34,380 INFO    MainThread:11626 [wandb_setup.py:_flush():81] Current SDK version is 0.26.0
+2026-04-16 14:17:34,381 INFO    MainThread:11626 [wandb_setup.py:_flush():81] Configure stats pid to 11626
+2026-04-16 14:17:34,381 INFO    MainThread:11626 [wandb_setup.py:_flush():81] Loading settings from environment variables
+2026-04-16 14:17:34,385 INFO    MainThread:11626 [wandb_init.py:setup_run_log_directory():721] Logging user logs to runs/multi_pp_2026-04-16_14-17-06/wandb/run-20260416_141734-lp6o0nz9/logs/debug.log
+2026-04-16 14:17:34,385 INFO    MainThread:11626 [wandb_init.py:setup_run_log_directory():722] Logging internal logs to runs/multi_pp_2026-04-16_14-17-06/wandb/run-20260416_141734-lp6o0nz9/logs/debug-internal.log
+2026-04-16 14:17:34,392 INFO    MainThread:11626 [wandb_init.py:init():848] calling init triggers
+2026-04-16 14:17:34,393 INFO    MainThread:11626 [wandb_init.py:init():853] wandb.init called with sweep_config: {}
+config: {'experiment': {'name': 'multi_pp', 'seed': 42, 'device': 'auto', 'runs_dir': 'runs', 'wandb': True, 'wandb_project': 'f1tenth_rl'}, 'env': {'map_path': 'maps/spielberg/spielberg', 'map_ext': '.png', 'num_agents': 2, 'timestep': 0.01, 'integrator': 'rk4', 'num_envs': 4, 'max_steps': 1500, 'num_laps': 999}, 'spawn': {'opponent_offset_min': 1.0, 'opponent_offset_max': 2.5, 'initial_speed': 2.0}, 'multi_agent': {'opponent': 'pure_pursuit'}, 'lidar': {'raw_beams': 1080, 'fov_deg': 270.0, 'range_max': 30.0}, 'observation': {'type': 'lidar_state', 'lidar_beams': 108, 'lidar_clip': 10.0, 'lidar_normalize': True, 'include_velocity': True, 'include_yaw_rate': True, 'include_prev_action': True, 'frame_stack': 1}, 'action': {'type': 'continuous', 'max_speed': 6.0, 'min_speed': 0.5, 'max_steer': 0.4189, 'smoothing_alpha': 0.3}, 'reward': {'type': 'custom', 'collision_penalty': -30.0, 'lap_bonus': 0.0, 'survival_reward': 0.01, 'steering_change_penalty': 0.5, 'wall_proximity_penalty': 0.75, 'wall_proximity_threshold': 0.5, 'w_progress': 1.0, 'w_cth': 0.5, 'w_speed': 0.3, 'w_relative': 2.0, 'progress_weight': 10.0, 'heading_weight': 1.0, 'crosstrack_weight': 0.3, 'speed_weight': 0.3, 'overtake_bonus': 50.0}, 'algorithm': {'type': 'ppo', 'total_timesteps': 2000000, 'ppo': {'learning_rate': 0.0003, 'n_steps': 2048, 'batch_size': 256, 'n_epochs': 10, 'gamma': 0.99, 'gae_lambda': 0.95, 'clip_range': 0.2, 'ent_coef': 0.001, 'vf_coef': 0.5, 'max_grad_norm': 0.5}}, 'network': {'type': 'mlp', 'mlp': {'hidden_sizes': [128, 128], 'activation': 'relu'}, 'pi_layers': [64, 64], 'vf_layers': [64, 64]}, 'domain_randomization': {'enabled': True, 'mode': 'curriculum', 'curriculum_warmup': 0.2, 'curriculum_full': 0.6, 'friction': {'enabled': True, 'range': [0.7, 1.3]}, 'mass': {'enabled': True, 'range': [3.2, 4.2]}, 'lidar_noise': {'enabled': True, 'std': 0.04}}, 'expert': {'pure_pursuit': {'target_speed': 5.5}}, 'evaluation': {'eval_freq': 100000, 'n_eval_episodes': 10, 'deterministic': True}, 'callbacks': {'checkpoint_freq': 100000}, '_wandb': {'code_path': 'code/scripts/train.py'}}
+2026-04-16 14:17:34,393 INFO    MainThread:11626 [wandb_init.py:init():896] starting backend
+2026-04-16 14:17:34,957 INFO    MainThread:11626 [wandb_init.py:init():911] sending inform_init request
+2026-04-16 14:17:35,002 INFO    MainThread:11626 [wandb_init.py:init():919] backend started and connected
+2026-04-16 14:17:35,026 INFO    MainThread:11626 [wandb_init.py:init():989] updated telemetry
+2026-04-16 14:17:35,075 INFO    MainThread:11626 [wandb_init.py:init():1013] communicating run to backend with 90.0 second timeout
+2026-04-16 14:17:36,103 INFO    MainThread:11626 [wandb_init.py:init():1058] starting run threads in backend
+2026-04-16 14:17:36,358 INFO    MainThread:11626 [wandb_run.py:_console_start():2542] atexit reg
+2026-04-16 14:17:36,358 INFO    MainThread:11626 [wandb_run.py:_redirect():2391] redirect: wrap_raw
+2026-04-16 14:17:36,358 INFO    MainThread:11626 [wandb_run.py:_redirect():2460] Wrapping output streams.
+2026-04-16 14:17:36,358 INFO    MainThread:11626 [wandb_run.py:_redirect():2483] Redirects installed.
+2026-04-16 14:17:36,362 INFO    MainThread:11626 [wandb_init.py:init():1098] run started, returning control to user process
+2026-04-16 14:17:36,362 INFO    MainThread:11626 [wandb_run.py:_config_callback():1403] config_cb None None {'obs_dim': 112, 'act_dim': 2, 'num_envs': 4, 'run_dir': 'runs/multi_pp_2026-04-16_14-17-06'}
+2026-04-16 14:17:38,162 INFO    MainThread:11626 [wandb_run.py:_tensorboard_callback():1632] tensorboard callback: runs/multi_pp_2026-04-16_14-17-06/tensorboard/PPO_1, True
+2026-04-16 17:46:36,375 INFO    MainThread:11626 [wandb_run.py:_finish():2309] finishing run finnman-penn/f1tenth_rl/lp6o0nz9
+2026-04-16 17:46:36,394 INFO    MainThread:11626 [wandb_run.py:_atexit_cleanup():2508] got exitcode: 0
+2026-04-16 17:46:36,399 INFO    MainThread:11626 [wandb_run.py:_restore():2490] restore
+2026-04-16 17:46:36,400 INFO    MainThread:11626 [wandb_run.py:_restore():2496] restore done
+2026-04-16 17:48:19,920 INFO    MainThread:11626 [wandb_run.py:_footer_sync_info():3886] logging synced files
