@@ -225,29 +225,22 @@ class SB3Trainer:
             return False
 
     def train(self):
-        """Run the training loop."""
+        """Run the training loop (single-map or multi-map sequential)."""
         if self.model is None:
             self.setup()
 
-        # ---- WandB ----
         use_wandb = self.config["experiment"].get("wandb", False)
         if use_wandb:
             use_wandb = self._init_wandb()
 
-        # ---- Callbacks ----
-        callbacks = self._build_callbacks(use_wandb)
+        multi_map_cfg = self.config.get("multi_map", {})
+        maps = multi_map_cfg.get("maps", None)
 
-        # ---- Train ----
-        self.model.learn(
-            total_timesteps=self.total_timesteps,
-            callback=CallbackList(callbacks),
-            progress_bar=True,
-        )
+        if maps:
+            self._train_multi_map(maps, multi_map_cfg, use_wandb)
+        else:
+            self._train_single(use_wandb)
 
-        # ---- Save final model ----
-        self._save_final()
-
-        # ---- Log final artifacts to WandB ----
         if use_wandb:
             self._log_wandb_artifacts()
             import wandb
@@ -259,6 +252,76 @@ class SB3Trainer:
         print(f"  Final model:   {self.run_dir}/final_model.zip")
         print(f"  Best model:    {self.best_model_dir}/best_model.zip")
         print(f"{'='*60}\n")
+
+    def _train_single(self, use_wandb: bool):
+        """Single-map training (existing behaviour)."""
+        self.model.learn(
+            total_timesteps=self.total_timesteps,
+            callback=CallbackList(self._build_callbacks(use_wandb)),
+            progress_bar=True,
+        )
+        self._save_final()
+
+    def _train_multi_map(self, maps, cfg, use_wandb: bool):
+        """Sequential multi-map training. Step counter is global across all maps."""
+        n_maps = len(maps)
+        steps_per_map = cfg.get("timesteps_per_map", self.total_timesteps // n_maps)
+
+        steps_done = 0
+        for i, map_path in enumerate(maps):
+            print(f"\n{'='*60}")
+            print(f"  Map phase {i+1}/{n_maps}: {map_path}")
+            print(f"  Steps this phase: {steps_per_map:,}  |  "
+                  f"Global target: {steps_done + steps_per_map:,}")
+            print(f"{'='*60}")
+
+            if i > 0 or self.config["env"]["map_path"] != map_path:
+                self._swap_map(map_path)
+
+            self.model.learn(
+                total_timesteps=steps_done + steps_per_map,
+                callback=CallbackList(self._build_callbacks(use_wandb)),
+                reset_num_timesteps=(i == 0),
+                progress_bar=True,
+            )
+            steps_done = self.model.num_timesteps
+
+            # Boundary checkpoint — allows resuming from any map transition
+            stem = Path(map_path).stem
+            ckpt = os.path.join(self.checkpoint_dir, f"map{i+1:02d}_{stem}_final")
+            self.model.save(ckpt)
+            if isinstance(self.train_env, VecNormalize):
+                self.train_env.save(ckpt + "_vecnormalize.pkl")
+            print(f"  Saved boundary checkpoint: {ckpt}.zip")
+
+        self._save_final()
+
+    def _swap_map(self, map_path: str):
+        """Replace train/eval envs for a new map, preserving VecNormalize reward stats."""
+        import copy
+
+        old_ret_rms = None
+        if isinstance(self.train_env, VecNormalize):
+            old_ret_rms = copy.deepcopy(self.train_env.ret_rms)
+
+        self.train_env.close()
+        if self.eval_env is not None:
+            self.eval_env.close()
+
+        self.config["env"]["map_path"] = map_path
+
+        n_envs = self.config["env"].get("num_envs", 8)
+        self.train_env = make_vec_env(self.config, n_envs=n_envs,
+                                      seed=self.seed, normalize=True)
+        self.eval_env  = make_vec_env(self.config, n_envs=1,
+                                      seed=self.seed + 1000, normalize=True)
+
+        # Restore reward running stats — keeps normalisation scale stable across maps
+        if old_ret_rms is not None and isinstance(self.train_env, VecNormalize):
+            self.train_env.ret_rms = old_ret_rms
+
+        self.model.set_env(self.train_env)
+        print(f"  Swapped to map: {map_path}")
 
     def _build_callbacks(self, use_wandb: bool):
         """Create training callbacks."""

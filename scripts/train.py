@@ -24,6 +24,11 @@ Usage:
 
     # BC pretraining + PPO fine-tuning
     python scripts/train.py --bc-pretrain demos/expert_demos.npz
+
+    # Multi-map sequential training (step counter is global across maps)
+    python scripts/train.py --config configs/custom.yaml \\
+        --maps maps/spielberg/Spielberg maps/levine_slam/levine_slam maps/levine_blocked/levine_blocked \\
+        --steps-per-map 700000
 """
 
 import argparse
@@ -87,6 +92,10 @@ def parse_args():
                         help="Train behavioral cloning only (no RL fine-tuning)")
     parser.add_argument("--resume", type=str, default=None,
                         help="Path to run directory or checkpoint to resume")
+    parser.add_argument("--maps", type=str, nargs="+", default=None,
+                        help="Ordered map paths for sequential multi-map training")
+    parser.add_argument("--steps-per-map", type=int, default=None,
+                        help="Timesteps on each map (default: total_timesteps / n_maps)")
 
     # Logging
     parser.add_argument("--wandb", action="store_true", default=None,
@@ -157,6 +166,16 @@ def apply_overrides(config, args):
         config["domain_randomization"]["mode"] = args.dr_mode
         if args.dr_mode != "off":
             config["domain_randomization"]["enabled"] = True
+
+    # Multi-map sequential training
+    if args.maps:
+        if "multi_map" not in config:
+            config["multi_map"] = {}
+        config["multi_map"]["maps"] = args.maps
+    if args.steps_per_map:
+        if "multi_map" not in config:
+            config["multi_map"] = {}
+        config["multi_map"]["timesteps_per_map"] = args.steps_per_map
 
     # WandB: CLI flags override config
     if args.no_wandb:

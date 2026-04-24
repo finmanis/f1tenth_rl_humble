@@ -1,0 +1,32 @@
+{
+  "os": "Linux-5.15.0-176-generic-aarch64-with-glibc2.35",
+  "python": "CPython 3.10.12",
+  "startedAt": "2026-04-24T17:18:05.352214Z",
+  "args": [
+    "--config",
+    "configs/custom.yaml"
+  ],
+  "program": "/home/ubuntu/f1tenth_rl/scripts/train.py",
+  "codePath": "scripts/train.py",
+  "codePathLocal": "scripts/train.py",
+  "git": {
+    "remote": "https://github.com/finmanis/f1tenth_rl_humble.git",
+    "commit": "dd143593b7865d34d2df8697048818a19ed4d44f"
+  },
+  "email": "finnman@seas.upenn.edu",
+  "root": "runs/multi_pp_2026-04-24_13-17-42",
+  "host": "f1tenth",
+  "executable": "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/bin/python3",
+  "cpu_count": 1,
+  "cpu_count_logical": 1,
+  "disk": {
+    "/": {
+      "total": "62242217984",
+      "used": "19349159936"
+    }
+  },
+  "memory": {
+    "total": "4100624384"
+  },
+  "writerId": "8tfex51e3uidfxn7k0b2hc5p6irjbsbx"
+}

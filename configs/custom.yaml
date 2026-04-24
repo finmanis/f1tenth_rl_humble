@@ -29,7 +29,7 @@ experiment:
   wandb_project: "f1tenth_rl"
 
 env:
-  map_path: "maps/spielberg/spielberg"
+  map_path: "maps/levine_blocked/levine_blocked"
   map_ext: ".png"
   num_agents: 2                # Two cars on the track
   timestep: 0.01
@@ -37,6 +37,16 @@ env:
   num_envs: 4
   max_steps: 1500              # ~15 second episodes focused on a single overtake attempt
   num_laps: 999                # Prevent lap-based termination; we terminate on overtake
+
+# Multi-map sequential training — uncomment to enable.
+# The step counter continues across maps so WandB, checkpoints, and callbacks
+# stay globally consistent. A boundary checkpoint is saved after each map.
+# multi_map:
+#   maps:
+#     - "maps/spielberg/Spielberg"
+#     - "maps/levine_slam/levine_slam"
+#     - "maps/levine_blocked/levine_blocked"
+#   timesteps_per_map: 2000000   # omit to split algorithm.total_timesteps evenly
 
 # Random spawn: ego at a random track position, opponent slightly ahead
 spawn:
@@ -65,7 +75,7 @@ observation:
 
 action:
   type: "continuous"
-  max_speed: 6.0               # Faster than the opponent (3 m/s) so we can overtake
+  max_speed: 4.0               # Faster than the opponent (3 m/s) so we can overtake
   min_speed: 0.5
   max_steer: 0.4189
   smoothing_alpha: 0.3
@@ -129,7 +139,7 @@ domain_randomization:
 
 expert:
   pure_pursuit:
-    target_speed: 5.5          # Opponent speed — ego should be faster
+    target_speed: 3.5          # Opponent speed — ego should be faster
 
 evaluation:
   eval_freq: 100000
