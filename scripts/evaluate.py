@@ -23,6 +23,12 @@ Usage:
     # Compare multiple runs
     python scripts/evaluate.py --run runs/run1 runs/run2 --plot
 
+    # Evaluate across multiple maps (uses model from run, swaps map each time)
+    python scripts/evaluate.py --run runs/my_run --use-maps maps/levine_blocked/levine_blocked maps/spielberg/Spielberg --episodes 10
+
+    # Multi-map evaluation with recordings per map
+    python scripts/evaluate.py --run runs/my_run --use-maps maps/levine_blocked/levine_blocked maps/spielberg/Spielberg --record
+
     # Export to ONNX
     python scripts/evaluate.py --run runs/my_run --export-onnx
 """
@@ -531,6 +537,29 @@ def evaluate_bc_model(bc_model_path, config, args):
     return metrics
 
 
+def _print_multi_map_summary(map_names, metrics_list):
+    """Print a compact cross-map comparison table."""
+    print(f"\n{'='*70}")
+    print(f"  Multi-Map Summary")
+    print(f"{'='*70}")
+    header = f"  {'Map':<30} {'Overtake%':>10} {'Crash%':>8} {'AvgReturn':>11} {'AvgSpeed':>9}"
+    print(header)
+    print(f"  {'-'*66}")
+    for name, m in zip(map_names, metrics_list):
+        ot_rate  = np.mean(m["overtake"]) if "overtake" in m else float("nan")
+        cr_rate  = np.mean(m["collision"]) if "collision" in m else float("nan")
+        avg_ret  = np.mean(m["return"])
+        avg_spd  = np.mean(m["avg_speed"]) if "avg_speed" in m else float("nan")
+        print(
+            f"  {name:<30} "
+            f"{ot_rate:>9.1%} "
+            f"{cr_rate:>7.1%} "
+            f"{avg_ret:>11.1f} "
+            f"{avg_spd:>8.2f}m/s"
+        )
+    print(f"{'='*70}\n")
+
+
 def main():
     parser = argparse.ArgumentParser(description="Evaluate F1TENTH RL policies")
     parser.add_argument("--run", type=str, nargs="+", default=None,
@@ -549,6 +578,8 @@ def main():
                         help="Record trajectory plots + animated GIF (headless, no display needed)")
     parser.add_argument("--record-dir", type=str, default=None,
                         help="Where to save recordings (default: <run_dir>/eval_recordings/)")
+    parser.add_argument("--use-maps", type=str, nargs="+", default=None,
+                        help="Evaluate the model on each map in sequence and print a per-map summary")
     parser.add_argument("--export-onnx", action="store_true")
     parser.add_argument("--plot", action="store_true")
     parser.add_argument("--save-plot", type=str, default=None)
@@ -585,15 +616,39 @@ def main():
             export_onnx(model_path, config)
             continue
 
-        metrics, episodes_data, waypoints = evaluate_model(model_path, config, norm_path, args)
-        print_results(metrics, os.path.basename(src))
-        all_metrics.append(metrics)
-        names.append(os.path.basename(src))
+        maps_to_eval = args.use_maps if args.use_maps else [config["env"]["map_path"]]
 
-        if args.record and episodes_data:
-            rec_dir = args.record_dir or str(Path(src) / "eval_recordings")
-            print(f"\nSaving recordings to: {rec_dir}")
-            plot_trajectories(episodes_data, waypoints, rec_dir, run_name=os.path.basename(src))
+        map_metrics_list = []
+        map_names_list = []
+
+        for map_path in maps_to_eval:
+            map_stem = Path(map_path).stem
+            config["env"]["map_path"] = map_path
+
+            if args.use_maps:
+                print(f"\n{'─'*50}")
+                print(f"  Map: {map_stem}")
+                print(f"{'─'*50}")
+
+            label = f"{os.path.basename(src)} / {map_stem}" if args.use_maps else os.path.basename(src)
+            metrics, episodes_data, waypoints = evaluate_model(model_path, config, norm_path, args)
+            print_results(metrics, label)
+            all_metrics.append(metrics)
+            names.append(label)
+            map_metrics_list.append(metrics)
+            map_names_list.append(map_stem)
+
+            if args.record and episodes_data:
+                if args.use_maps:
+                    base_rec = args.record_dir or str(Path(src) / "eval_recordings")
+                    rec_dir = str(Path(base_rec) / map_stem)
+                else:
+                    rec_dir = args.record_dir or str(Path(src) / "eval_recordings")
+                print(f"\nSaving recordings to: {rec_dir}")
+                plot_trajectories(episodes_data, waypoints, rec_dir, run_name=label)
+
+        if args.use_maps and len(maps_to_eval) > 1:
+            _print_multi_map_summary(map_names_list, map_metrics_list)
 
     if (args.plot or args.save_plot) and all_metrics:
         plot_results(all_metrics, names, args.save_plot)

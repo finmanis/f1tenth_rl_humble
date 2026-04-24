@@ -297,12 +297,21 @@ class SB3Trainer:
         self._save_final()
 
     def _swap_map(self, map_path: str):
-        """Replace train/eval envs for a new map, preserving VecNormalize reward stats."""
+        """Replace train/eval envs for a new map, preserving VecNormalize reward stats.
+
+        Uses a temp-save/reload cycle to handle any n_envs mismatch between the
+        currently loaded model and the new environment (e.g. after --resume loads
+        the model with n_envs=1 for the eval env).
+        """
         import copy
 
         old_ret_rms = None
         if isinstance(self.train_env, VecNormalize):
             old_ret_rms = copy.deepcopy(self.train_env.ret_rms)
+
+        # Save weights before closing envs so we can reload with the new env
+        tmp_path = os.path.join(self.checkpoint_dir, "_swap_tmp")
+        self.model.save(tmp_path)
 
         self.train_env.close()
         if self.eval_env is not None:
@@ -320,7 +329,14 @@ class SB3Trainer:
         if old_ret_rms is not None and isinstance(self.train_env, VecNormalize):
             self.train_env.ret_rms = old_ret_rms
 
-        self.model.set_env(self.train_env)
+        # Reload with the new env so model.n_envs matches train_env.num_envs
+        AlgoClass = self.ALGORITHMS[self.algo_type]
+        self.model = AlgoClass.load(tmp_path, env=self.train_env, device=self.device)
+
+        tmp_zip = tmp_path + ".zip"
+        if os.path.exists(tmp_zip):
+            os.remove(tmp_zip)
+
         print(f"  Swapped to map: {map_path}")
 
     def _build_callbacks(self, use_wandb: bool):
