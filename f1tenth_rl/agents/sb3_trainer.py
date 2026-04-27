@@ -175,12 +175,12 @@ class SB3Trainer:
         elif self.algo_type == "td3":
             self.model = AlgoClass(
                 **common_kwargs,
-                learning_rate=algo_cfg.get("learning_rate", 1e-3),
-                buffer_size=algo_cfg.get("buffer_size", 300_000),
+                learning_rate=algo_cfg.get("learning_rate", 3e-4),
+                buffer_size=algo_cfg.get("buffer_size", 100_000),
                 batch_size=algo_cfg.get("batch_size", 256),
                 tau=algo_cfg.get("tau", 0.005),
                 gamma=algo_cfg.get("gamma", 0.99),
-                learning_starts=algo_cfg.get("learning_starts", 10000),
+                learning_starts=algo_cfg.get("learning_starts", 20000),
                 train_freq=algo_cfg.get("train_freq", 1),
                 gradient_steps=algo_cfg.get("gradient_steps", 1),
                 policy_delay=algo_cfg.get("policy_delay", 2),

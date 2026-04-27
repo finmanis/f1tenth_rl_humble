@@ -39,6 +39,8 @@ env:
   num_laps: 999                # Prevent lap-based termination; we terminate on overtake
   sac_overrides:
     num_envs: 1                # SAC is single-env by design; prevents buffer corruption
+  td3_overrides:
+    num_envs: 1                # TD3 is also off-policy single-env
 
 # Multi-map sequential training — uncomment to enable.
 # The step counter continues across maps so WandB, checkpoints, and callbacks
@@ -83,6 +85,8 @@ action:
   smoothing_alpha: 0.3         # PPO value — works well
   sac_overrides:
     smoothing_alpha: 0.6       # less lag so Q-function credit assignment is accurate
+  td3_overrides:
+    smoothing_alpha: 0.6
 
 reward:
   type: "custom"
@@ -109,12 +113,17 @@ reward:
   # --- Overtake Terminal Reward ---
   overtake_bonus: 70.0          # Large reward when ego successfully passes the opponent
 
-  # --- SAC overrides (merged at runtime when algo=sac, PPO values untouched) ---
+  # --- Off-policy overrides (merged at runtime, PPO values untouched) ---
   sac_overrides:
-    collision_penalty: -30.0      # less cliff-like for Q-value estimation
-    survival_reward: 0.02         # stronger alive signal relative to collision
-    wall_proximity_penalty: 1.0   # stronger early wall warning
-    wall_proximity_threshold: 0.5 # warn earlier (0.8m vs 0.5m)
+    collision_penalty: -30.0
+    survival_reward: 0.02
+    wall_proximity_penalty: 1.0
+    wall_proximity_threshold: 0.5
+  td3_overrides:
+    collision_penalty: -30.0
+    survival_reward: 0.01
+    wall_proximity_penalty: 1.0
+    wall_proximity_threshold: 0.5
 
 algorithm:
   type: "sac"
@@ -140,6 +149,16 @@ algorithm:
     train_freq: 1
     gradient_steps: 1
     ent_coef: 0.1             # fixed — prevents entropy collapse on sparse collision signal
+  td3:
+    learning_rate: 0.0003
+    buffer_size: 100_000
+    batch_size: 256
+    tau: 0.005
+    gamma: 0.99
+    learning_starts: 20000
+    train_freq: 1
+    gradient_steps: 1
+    policy_delay: 2           # update actor every 2 critic steps (TD3 standard)
 
 network:
   type: "mlp"
