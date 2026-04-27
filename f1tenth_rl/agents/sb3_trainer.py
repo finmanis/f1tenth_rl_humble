@@ -98,8 +98,22 @@ class SB3Trainer:
         self.model = None
         self.wandb_run = None
 
+    def _apply_algo_overrides(self):
+        """Merge {algo_type}_overrides into base config sections before env creation.
+
+        Allows per-algorithm tuning of reward, action, and env settings in the YAML
+        without losing the values that work for other algorithms.
+        """
+        for section in ("reward", "action", "env"):
+            sec_cfg = self.config.get(section, {})
+            overrides = sec_cfg.pop(f"{self.algo_type}_overrides", {})
+            if overrides:
+                print(f"  Applying {self.algo_type} overrides to [{section}]: {overrides}")
+                sec_cfg.update(overrides)
+
     def setup(self):
         """Create environments and algorithm. Call before train()."""
+        self._apply_algo_overrides()
 
         n_envs = self.config["env"].get("num_envs", 8)
         self.train_env = make_vec_env(
@@ -149,24 +163,26 @@ class SB3Trainer:
             self.model = AlgoClass(
                 **common_kwargs,
                 learning_rate=algo_cfg.get("learning_rate", 3e-4),
-                buffer_size=algo_cfg.get("buffer_size", 1_000_000),
+                buffer_size=algo_cfg.get("buffer_size", 100_000),
                 batch_size=algo_cfg.get("batch_size", 256),
                 tau=algo_cfg.get("tau", 0.005),
                 gamma=algo_cfg.get("gamma", 0.99),
-                learning_starts=algo_cfg.get("learning_starts", 10000),
+                learning_starts=algo_cfg.get("learning_starts", 20000),
                 train_freq=algo_cfg.get("train_freq", 1),
-                ent_coef=algo_cfg.get("ent_coef", "auto"),
+                gradient_steps=algo_cfg.get("gradient_steps", 1),
+                ent_coef=algo_cfg.get("ent_coef", 0.1),
             )
         elif self.algo_type == "td3":
             self.model = AlgoClass(
                 **common_kwargs,
                 learning_rate=algo_cfg.get("learning_rate", 1e-3),
-                buffer_size=algo_cfg.get("buffer_size", 1_000_000),
+                buffer_size=algo_cfg.get("buffer_size", 300_000),
                 batch_size=algo_cfg.get("batch_size", 256),
                 tau=algo_cfg.get("tau", 0.005),
                 gamma=algo_cfg.get("gamma", 0.99),
                 learning_starts=algo_cfg.get("learning_starts", 10000),
                 train_freq=algo_cfg.get("train_freq", 1),
+                gradient_steps=algo_cfg.get("gradient_steps", 1),
                 policy_delay=algo_cfg.get("policy_delay", 2),
             )
 
@@ -331,7 +347,10 @@ class SB3Trainer:
 
         # Reload with the new env so model.n_envs matches train_env.num_envs
         AlgoClass = self.ALGORITHMS[self.algo_type]
-        self.model = AlgoClass.load(tmp_path, env=self.train_env, device=self.device)
+        self.model = AlgoClass.load(
+            tmp_path, env=self.train_env, device=self.device,
+            custom_objects=self._replay_buffer_overrides(),
+        )
 
         tmp_zip = tmp_path + ".zip"
         if os.path.exists(tmp_zip):
@@ -448,15 +467,61 @@ class SB3Trainer:
         with open(path + "_config.yaml", "w") as f:
             yaml.dump(self.config, f, default_flow_style=False)
 
+    @staticmethod
+    def _find_latest_checkpoint(checkpoint_dir: Path):
+        """Return (model_stem, norm_path) for the highest-step checkpoint, or (None, None)."""
+        import re
+        best_step = -1
+        best_stem = None
+        for f in checkpoint_dir.glob("model_*_steps.zip"):
+            m = re.search(r"model_(\d+)_steps\.zip", f.name)
+            if m:
+                step = int(m.group(1))
+                if step > best_step:
+                    best_step = step
+                    best_stem = str(f).replace(".zip", "")
+        if best_stem is None:
+            return None, None
+        norm = best_stem.replace("model_", "model_vecnormalize_") + ".pkl"
+        norm_path = norm if os.path.exists(norm) else None
+        return best_stem, norm_path
+
+    def _replay_buffer_overrides(self) -> dict:
+        """Return custom_objects dict to override saved buffer_size on SAC/TD3 load.
+
+        SB3 restores the original buffer_size from the checkpoint by default.
+        Passing custom_objects forces the new value from config instead.
+        """
+        if self.algo_type not in ("sac", "td3"):
+            return {}
+        algo_cfg = self.config["algorithm"].get(self.algo_type, {})
+        buf = algo_cfg.get("buffer_size", 100_000)
+        return {"buffer_size": buf}
+
     def load(self, path: str, env=None):
-        """Load a trained model from a run directory or model path."""
+        """Load a trained model from a run directory or model path.
+
+        When given a run directory, prefers final_model; falls back to the
+        highest-step checkpoint if final_model does not exist.
+        """
         AlgoClass = self.ALGORITHMS[self.algo_type]
 
-        # Support loading from run directory
         run_dir = Path(path)
         if run_dir.is_dir():
-            model_path = str(run_dir / "final_model")
-            norm_path = str(run_dir / "final_vecnormalize.pkl")
+            final = run_dir / "final_model.zip"
+            if final.exists():
+                model_path = str(run_dir / "final_model")
+                norm_path = str(run_dir / "final_vecnormalize.pkl")
+            else:
+                ckpt_dir = run_dir / "checkpoints"
+                model_path, norm_path = self._find_latest_checkpoint(ckpt_dir)
+                if model_path is None:
+                    raise FileNotFoundError(
+                        f"No final_model.zip and no step checkpoints found in {run_dir}"
+                    )
+                print(f"  No final_model found — resuming from latest checkpoint: {model_path}")
+                if norm_path is None:
+                    norm_path = str(run_dir / "final_vecnormalize.pkl")
         else:
             model_path = path
             norm_path = path + "_vecnormalize.pkl"
@@ -469,7 +534,10 @@ class SB3Trainer:
             env.training = False
             env.norm_reward = False
 
-        self.model = AlgoClass.load(model_path, env=env, device=self.device)
+        self.model = AlgoClass.load(
+            model_path, env=env, device=self.device,
+            custom_objects=self._replay_buffer_overrides(),
+        )
         self.eval_env = env
         print(f"  Loaded model from {model_path}")
 

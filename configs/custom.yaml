@@ -34,9 +34,11 @@ env:
   num_agents: 2                # Two cars on the track
   timestep: 0.01
   integrator: "rk4"
-  num_envs: 4
+  num_envs: 4                  # PPO value
   max_steps: 1500              # ~15 second episodes focused on a single overtake attempt
   num_laps: 999                # Prevent lap-based termination; we terminate on overtake
+  sac_overrides:
+    num_envs: 1                # SAC is single-env by design; prevents buffer corruption
 
 # Multi-map sequential training — uncomment to enable.
 # The step counter continues across maps so WandB, checkpoints, and callbacks
@@ -78,11 +80,13 @@ action:
   max_speed: 4.0               # Faster than the opponent (3 m/s) so we can overtake
   min_speed: 0.5
   max_steer: 0.4189
-  smoothing_alpha: 0.3
+  smoothing_alpha: 0.3         # PPO value — works well
+  sac_overrides:
+    smoothing_alpha: 0.6       # less lag so Q-function credit assignment is accurate
 
 reward:
   type: "custom"
-  # --- Global Penalties (handled by base class) ---
+  # --- PPO-tuned base values (do not change — these work well for PPO) ---
   collision_penalty: -30.0      # Crashing into the opponent is very costly
   lap_bonus: 0.0                # No lap completion; we end on overtake instead
   survival_reward: 0.01
@@ -103,10 +107,17 @@ reward:
   speed_weight: 0.3             # Internal multiplier for SpeedReward
 
   # --- Overtake Terminal Reward ---
-  overtake_bonus: 50.0          # Large reward when ego successfully passes the opponent
+  overtake_bonus: 70.0          # Large reward when ego successfully passes the opponent
+
+  # --- SAC overrides (merged at runtime when algo=sac, PPO values untouched) ---
+  sac_overrides:
+    collision_penalty: -30.0      # less cliff-like for Q-value estimation
+    survival_reward: 0.02         # stronger alive signal relative to collision
+    wall_proximity_penalty: 1.0   # stronger early wall warning
+    wall_proximity_threshold: 0.5 # warn earlier (0.8m vs 0.5m)
 
 algorithm:
-  type: "ppo"
+  type: "sac"
   total_timesteps: 2_000_000
   ppo:
     learning_rate: 0.0003
@@ -119,6 +130,16 @@ algorithm:
     ent_coef: 0.001
     vf_coef: 0.5
     max_grad_norm: 0.5
+  sac:
+    learning_rate: 0.0003
+    buffer_size: 100_000      # with num_envs=1: ~0.08GB, fits in RAM
+    batch_size: 256
+    tau: 0.005
+    gamma: 0.99
+    learning_starts: 20000    # enough random exploration before Q-learning starts
+    train_freq: 1
+    gradient_steps: 1
+    ent_coef: 0.1             # fixed — prevents entropy collapse on sparse collision signal
 
 network:
   type: "mlp"

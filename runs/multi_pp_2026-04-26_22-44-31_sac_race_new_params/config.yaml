@@ -1,0 +1,131 @@
+action:
+  max_speed: 4.0
+  max_steer: 0.4189
+  min_speed: 0.5
+  sac_overrides:
+    smoothing_alpha: 0.6
+  smoothing_alpha: 0.3
+  type: continuous
+algorithm:
+  ppo:
+    batch_size: 256
+    clip_range: 0.2
+    ent_coef: 0.001
+    gae_lambda: 0.95
+    gamma: 0.99
+    learning_rate: 0.0003
+    max_grad_norm: 0.5
+    n_epochs: 10
+    n_steps: 2048
+    vf_coef: 0.5
+  sac:
+    batch_size: 256
+    buffer_size: 100000
+    ent_coef: 0.1
+    gamma: 0.99
+    gradient_steps: 1
+    learning_rate: 0.0003
+    learning_starts: 20000
+    tau: 0.005
+    train_freq: 1
+  total_timesteps: 2000000
+  type: sac
+callbacks:
+  checkpoint_freq: 100000
+domain_randomization:
+  curriculum_full: 0.6
+  curriculum_warmup: 0.2
+  enabled: true
+  friction:
+    enabled: true
+    range:
+    - 0.7
+    - 1.3
+  lidar_noise:
+    enabled: true
+    std: 0.04
+  mass:
+    enabled: true
+    range:
+    - 3.2
+    - 4.2
+  mode: curriculum
+env:
+  integrator: rk4
+  map_ext: .png
+  map_path: maps/levine_race/levine_race
+  max_steps: 1500
+  num_agents: 2
+  num_envs: 4
+  num_laps: 999
+  sac_overrides:
+    num_envs: 1
+  timestep: 0.01
+evaluation:
+  deterministic: true
+  eval_freq: 100000
+  n_eval_episodes: 10
+experiment:
+  device: auto
+  name: multi_pp
+  runs_dir: runs
+  seed: 42
+  wandb: true
+  wandb_project: f1tenth_rl
+expert:
+  pure_pursuit:
+    target_speed: 3.5
+lidar:
+  fov_deg: 270.0
+  range_max: 30.0
+  raw_beams: 1080
+multi_agent:
+  opponent: pure_pursuit
+network:
+  mlp:
+    activation: relu
+    hidden_sizes:
+    - 128
+    - 128
+  pi_layers:
+  - 64
+  - 64
+  type: mlp
+  vf_layers:
+  - 64
+  - 64
+observation:
+  frame_stack: 1
+  include_prev_action: true
+  include_velocity: true
+  include_yaw_rate: true
+  lidar_beams: 108
+  lidar_clip: 10.0
+  lidar_normalize: true
+  type: lidar_state
+reward:
+  collision_penalty: -30.0
+  crosstrack_weight: 0.3
+  heading_weight: 1.0
+  lap_bonus: 0.0
+  overtake_bonus: 50.0
+  progress_weight: 10.0
+  sac_overrides:
+    collision_penalty: -15.0
+    survival_reward: 0.05
+    wall_proximity_penalty: 1.0
+    wall_proximity_threshold: 0.8
+  speed_weight: 0.3
+  steering_change_penalty: 0.5
+  survival_reward: 0.01
+  type: custom
+  w_cth: 0.5
+  w_progress: 1.0
+  w_relative: 2.0
+  w_speed: 0.3
+  wall_proximity_penalty: 0.75
+  wall_proximity_threshold: 0.5
+spawn:
+  initial_speed: 2.0
+  opponent_offset_max: 2.5
+  opponent_offset_min: 1.0

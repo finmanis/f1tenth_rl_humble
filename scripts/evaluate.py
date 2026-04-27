@@ -273,7 +273,47 @@ def plot_results(all_metrics, names, save_path=None):
     plt.close()
 
 
-def plot_trajectories(episodes_data, waypoints, save_dir, run_name="eval"):
+def _load_map_image(map_path: str):
+    """
+    Load a map occupancy-grid PNG and return (img, extent) for matplotlib imshow.
+
+    extent = [x_min, x_max, y_min, y_max] in world (metre) coordinates.
+    Returns (None, None) if the map files can't be found.
+    """
+    try:
+        from PIL import Image
+    except ImportError:
+        return None, None
+
+    yaml_path = map_path + ".yaml"
+    if not os.path.exists(yaml_path):
+        return None, None
+
+    with open(yaml_path) as f:
+        meta = yaml.safe_load(f)
+
+    resolution = meta["resolution"]
+    origin = meta["origin"]          # [x, y, theta]
+    negate = meta.get("negate", 0)
+
+    img_name = meta.get("image", os.path.basename(map_path) + ".png")
+    img_path = os.path.join(os.path.dirname(map_path), img_name)
+    if not os.path.exists(img_path):
+        return None, None
+
+    img = np.array(Image.open(img_path).convert("L"), dtype=np.float32)
+    if negate:
+        img = 255.0 - img
+
+    h, w = img.shape
+    x0, y0 = origin[0], origin[1]
+    extent = [x0, x0 + w * resolution, y0, y0 + h * resolution]
+
+    # Row 0 = world y_max; imshow origin="upper" places row 0 at top — no flip needed
+    return img, extent
+
+
+def plot_trajectories(episodes_data, waypoints, save_dir, run_name="eval", map_path=None):
     """
     Generate trajectory visualisations from recorded episode data.
     Fully headless — uses the Agg backend, no display or X server required.
@@ -291,11 +331,19 @@ def plot_trajectories(episodes_data, waypoints, save_dir, run_name="eval"):
     os.makedirs(save_dir, exist_ok=True)
     wps = np.array(waypoints)[:, :2] if waypoints is not None else None
 
+    map_img, map_extent = (None, None)
+    if map_path:
+        map_img, map_extent = _load_map_image(str(project_root / map_path)
+                                               if not os.path.isabs(map_path) else map_path)
+
     def draw_track(ax):
+        if map_img is not None:
+            ax.imshow(map_img, cmap="gray", extent=map_extent,
+                      origin="upper", alpha=0.35, zorder=0, aspect="equal")
         if wps is not None:
-            ax.plot(wps[:, 0], wps[:, 1], "k-", lw=0.8, alpha=0.2, zorder=0)
-            # Close the loop
-            ax.plot([wps[-1, 0], wps[0, 0]], [wps[-1, 1], wps[0, 1]], "k-", lw=0.8, alpha=0.2, zorder=0)
+            ax.plot(wps[:, 0], wps[:, 1], "C1-", lw=0.8, alpha=0.5, zorder=1)
+            ax.plot([wps[-1, 0], wps[0, 0]], [wps[-1, 1], wps[0, 1]],
+                    "C1-", lw=0.8, alpha=0.5, zorder=1)
 
     # ------------------------------------------------------------------ #
     # Overview: all ego trajectories overlaid, colour-coded by outcome
@@ -367,10 +415,10 @@ def plot_trajectories(episodes_data, waypoints, save_dir, run_name="eval"):
     best = max(episodes_data, key=lambda e: e["return"])
     best_idx = episodes_data.index(best)
     gif_path = os.path.join(save_dir, f"best_ep{best_idx+1}.gif")
-    _animate_episode(best, wps, gif_path)
+    _animate_episode(best, wps, gif_path, map_img=map_img, map_extent=map_extent)
 
 
-def _animate_episode(ep_data, wps, save_path):
+def _animate_episode(ep_data, wps, save_path, map_img=None, map_extent=None):
     """
     Save an animated GIF of car positions for one episode.
     Uses PillowWriter — requires only Pillow, no display needed.
@@ -386,9 +434,12 @@ def _animate_episode(ep_data, wps, save_path):
     sampled = frames[::step]
 
     fig, ax = plt.subplots(figsize=(7, 7))
+    if map_img is not None:
+        ax.imshow(map_img, cmap="gray", extent=map_extent,
+                  origin="upper", alpha=0.35, zorder=0, aspect="equal")
     if wps is not None:
-        ax.plot(wps[:, 0], wps[:, 1], "k-", lw=0.8, alpha=0.2)
-        ax.plot([wps[-1, 0], wps[0, 0]], [wps[-1, 1], wps[0, 1]], "k-", lw=0.8, alpha=0.2)
+        ax.plot(wps[:, 0], wps[:, 1], "C1-", lw=0.8, alpha=0.5)
+        ax.plot([wps[-1, 0], wps[0, 0]], [wps[-1, 1], wps[0, 1]], "C1-", lw=0.8, alpha=0.5)
 
     # Faint ghost trajectories for context
     ego_xs_all = [f["ego_x"] for f in frames]
@@ -645,7 +696,8 @@ def main():
                 else:
                     rec_dir = args.record_dir or str(Path(src) / "eval_recordings")
                 print(f"\nSaving recordings to: {rec_dir}")
-                plot_trajectories(episodes_data, waypoints, rec_dir, run_name=label)
+                plot_trajectories(episodes_data, waypoints, rec_dir, run_name=label,
+                                  map_path=config["env"].get("map_path"))
 
         if args.use_maps and len(maps_to_eval) > 1:
             _print_multi_map_summary(map_names_list, map_metrics_list)
