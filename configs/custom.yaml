@@ -111,7 +111,7 @@ reward:
   speed_weight: 0.3             # Internal multiplier for SpeedReward
 
   # --- Overtake Terminal Reward ---
-  overtake_bonus: 70.0          # Large reward when ego successfully passes the opponent
+  overtake_bonus: 50.0          # Large reward when ego successfully passes the opponent
 
   # --- Off-policy overrides (merged at runtime, PPO values untouched) ---
   sac_overrides:
@@ -126,7 +126,7 @@ reward:
     wall_proximity_threshold: 0.5
 
 algorithm:
-  type: "sac"
+  type: "ppo"
   total_timesteps: 2_000_000
   ppo:
     learning_rate: 0.0003
