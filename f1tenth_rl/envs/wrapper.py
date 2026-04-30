@@ -274,6 +274,9 @@ class F1TenthWrapper(gym.Env):
         self.opponent_controller = None
         self.opponent_rl_policy = None
         self.opponent_mode = config.get("multi_agent", {}).get("opponent", "pure_pursuit")
+        self.target_speed_fallback = (
+            config.get("expert", {}).get("pure_pursuit", {}).get("target_speed", 3.5)
+        )
         if self.num_agents > 1 and self.waypoints is not None:
             if self.opponent_mode == "pure_pursuit":
                 expert_wp = self._load_expert_waypoints(config)
@@ -283,6 +286,10 @@ class F1TenthWrapper(gym.Env):
                 self.opponent_controller = PurePursuitController(
                     expert_wp, expert_cfg
                 )
+
+        # Load all available opponent lines (left / center / right)
+        self.opponent_lines = self._load_opponent_lines(config)
+        self.current_opponent_line = self.opponent_lines[0]
 
         # ---- Spawn config ----
         self.spawn_cfg = config.get("spawn", {})
@@ -348,6 +355,41 @@ class F1TenthWrapper(gym.Env):
 
         return self.waypoints
 
+    def _load_opponent_lines(self, config: Dict):
+        """
+        Load left / center / right opponent lines from CSV files.
+
+        Looks for {map_path}_left_line.csv, _centerline.csv, _right_line.csv.
+        Falls back to self.waypoints if no files are found.
+        Returns a list of (N, 3) arrays in [left, center, right] order for
+        whichever files exist.
+        """
+        lines = []
+        map_path = config.get("env", config).get("map_path", "")
+
+        for suffix in ("_left_line", "_centerline", "_right_line"):
+            path = map_path + suffix + ".csv"
+            if os.path.exists(path):
+                try:
+                    data = np.loadtxt(path, delimiter=",", skiprows=1)
+                    if data.ndim == 1:
+                        data = data.reshape(1, -1)
+                    if data.shape[1] >= 3:
+                        arr = data[:, :3]
+                    else:
+                        arr = np.column_stack([
+                            data[:, :2],
+                            np.full(len(data), self.target_speed_fallback),
+                        ])
+                    lines.append(arr)
+                    print(f"  [Opponent lines] Loaded: {path}")
+                except Exception as e:
+                    print(f"  [Opponent lines] Failed to load {path}: {e}")
+
+        if not lines:
+            lines = [self.waypoints]
+        return lines
+
     def _make_reward(self, rew_cfg: Dict):
         """Create reward function using extracted waypoints."""
         reward_type = rew_cfg.get("type", "progress")
@@ -381,34 +423,56 @@ class F1TenthWrapper(gym.Env):
         Ego is placed at a random waypoint; opponent is placed a random distance ahead.
         Both start at initial_speed.
         """
-        wps = self.waypoints[:, :2]
-        n = len(wps)
+        ego_wps = self.waypoints[:, :2]
+        n_ego = len(ego_wps)
 
-        ego_wp = int(self.np_random.integers(0, n))
+        # Opponent spawns on its currently selected line (may differ from centerline)
+        opp_wps = self.current_opponent_line[:, :2] \
+            if self.current_opponent_line is not None else ego_wps
+        n_opp = len(opp_wps)
+
+        ego_wp = int(self.np_random.integers(0, n_ego))
 
         offset_m = float(self.np_random.uniform(
             self.spawn_cfg.get("opponent_offset_min", 3.0),
             self.spawn_cfg.get("opponent_offset_max", 10.0),
         ))
 
-        # Walk forward along waypoints until cumulative distance >= offset_m
-        opp_wp, dist_acc = ego_wp, 0.0
-        for _ in range(n):
-            nxt = (opp_wp + 1) % n
-            dist_acc += float(np.sqrt(((wps[nxt] - wps[opp_wp]) ** 2).sum()))
+        # Walk forward along the opponent's line until cumulative distance >= offset_m
+        # Start from the waypoint on the opponent line closest to the ego spawn point
+        ego_pos = ego_wps[ego_wp]
+        closest_opp = int(np.argmin(np.sum((opp_wps - ego_pos) ** 2, axis=1)))
+        opp_wp, dist_acc = closest_opp, 0.0
+        for _ in range(n_opp):
+            nxt = (opp_wp + 1) % n_opp
+            dist_acc += float(np.sqrt(((opp_wps[nxt] - opp_wps[opp_wp]) ** 2).sum()))
             opp_wp = nxt
             if dist_acc >= offset_m:
                 break
 
-        def heading(idx: int) -> float:
-            nxt = (idx + 1) % n
-            return float(np.arctan2(wps[nxt, 1] - wps[idx, 1], wps[nxt, 0] - wps[idx, 0]))
+        def ego_heading(idx: int) -> float:
+            nxt = (idx + 1) % n_ego
+            return float(np.arctan2(
+                ego_wps[nxt, 1] - ego_wps[idx, 1],
+                ego_wps[nxt, 0] - ego_wps[idx, 0],
+            ))
+
+        def opp_heading(idx: int) -> float:
+            nxt = (idx + 1) % n_opp
+            return float(np.arctan2(
+                opp_wps[nxt, 1] - opp_wps[idx, 1],
+                opp_wps[nxt, 0] - opp_wps[idx, 0],
+            ))
 
         v0 = float(self.spawn_cfg.get("initial_speed", 2.0))
         states = np.zeros((self.num_agents, 7), dtype=np.float64)
-        states[self.ego_idx] = [wps[ego_wp, 0], wps[ego_wp, 1], 0.0, v0, heading(ego_wp), 0.0, 0.0]
+        states[self.ego_idx] = [
+            ego_wps[ego_wp, 0], ego_wps[ego_wp, 1], 0.0, v0, ego_heading(ego_wp), 0.0, 0.0,
+        ]
         opp_idx = 1 - self.ego_idx
-        states[opp_idx]      = [wps[opp_wp, 0], wps[opp_wp, 1], 0.0, v0, heading(opp_wp), 0.0, 0.0]
+        states[opp_idx] = [
+            opp_wps[opp_wp, 0], opp_wps[opp_wp, 1], 0.0, v0, opp_heading(opp_wp), 0.0, 0.0,
+        ]
         return states
 
     def _check_overtake(self, flat_obs: Dict) -> bool:
@@ -547,6 +611,12 @@ class F1TenthWrapper(gym.Env):
         super().reset(seed=seed)
 
         reset_options = dict(options) if options else {}
+
+        # Pick a random opponent line for this episode
+        if self.opponent_controller is not None and len(self.opponent_lines) > 1:
+            idx = int(self.np_random.integers(0, len(self.opponent_lines)))
+            self.current_opponent_line = self.opponent_lines[idx]
+            self.opponent_controller.set_waypoints(self.current_opponent_line)
 
         # Random spawn with initial velocity via full-state initialization.
         # Falls back to start_pose config if waypoints are unavailable.

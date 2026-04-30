@@ -61,6 +61,7 @@ spawn:
 # Tell the framework to use a pure pursuit bot as the opponent
 multi_agent:
   opponent: "pure_pursuit"
+  opponent_line_offset: 0.4      # metres used by generate_offset_lines.py (0.4 suits levine_race)
 
 lidar:
   raw_beams: 1080

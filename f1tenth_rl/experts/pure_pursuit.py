@@ -65,6 +65,15 @@ class PurePursuitController:
         self.max_speed = action_cfg.get("max_speed", pp.get("max_speed", 8.0))
         self.min_speed = action_cfg.get("min_speed", pp.get("min_speed", 0.5))
 
+    def set_waypoints(self, waypoints: np.ndarray):
+        """Swap the raceline without rebuilding the controller (called at episode reset)."""
+        self.waypoints = waypoints[:, :2]
+        self.n_waypoints = len(waypoints)
+        if waypoints.shape[1] >= 3 and np.any(waypoints[:, 2] > 1.01):
+            self.velocities = waypoints[:, 2].copy()
+        else:
+            self.velocities = np.full(self.n_waypoints, self.target_speed)
+
     @classmethod
     def from_track(cls, track, config: Optional[Dict] = None) -> "PurePursuitController":
         """Create from an f1tenth_gym Track object."""
