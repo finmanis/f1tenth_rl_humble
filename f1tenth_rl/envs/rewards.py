@@ -51,6 +51,7 @@ class RewardFunction(ABC):
         self.steering_change_penalty = config.get("steering_change_penalty", 0.0)
         self.wall_proximity_penalty = config.get("wall_proximity_penalty", 0.0)
         self.wall_proximity_threshold = config.get("wall_proximity_threshold", 0.5)
+        self.timeout_penalty = config.get("timeout_penalty", 0.0)
         self._progress = 0.0
 
     def reset(self, obs_dict: Dict, ego_idx: int):
@@ -61,7 +62,7 @@ class RewardFunction(ABC):
         pass
 
     def compute(self, obs_dict, ego_idx, action, prev_action,
-                terminated, collision, lap_complete) -> float:
+                terminated, collision, lap_complete, truncated=False) -> float:
         reward = self._compute_impl(obs_dict, ego_idx, action)
         reward += self.survival_reward
 
@@ -83,6 +84,8 @@ class RewardFunction(ABC):
             reward = self.collision_penalty
         elif lap_complete:
             reward += self.lap_bonus
+        elif truncated and self.timeout_penalty != 0.0:
+            reward += self.timeout_penalty
         return reward
 
     @abstractmethod
@@ -231,6 +234,13 @@ class CustomReward(RewardFunction):
         self.w_speed    = config.get("w_speed", 1.0)
         self.w_relative = config.get("w_relative", 2.0)
 
+        # Normalize CTH and speed per-step rewards by track length so that
+        # equal-quality driving produces comparable episode returns across tracks.
+        # reference_track_length defaults to the actual track → track_norm = 1.0 (no change).
+        self.track_length = self.progress_comp.total_length
+        ref_len = config.get("reference_track_length", self.track_length)
+        self.track_norm = ref_len / self.track_length
+
         # Track episode start position for relative-progress reward
         self._episode_start_ego_d = 0.0
         self._opp_idx = 1
@@ -267,11 +277,12 @@ class CustomReward(RewardFunction):
             adj_opp = (opp_d - self._episode_start_ego_d) % total
             r_relative = self.w_relative * (adj_ego - adj_opp) / total
 
-        # 3. Combine
+        # 3. Combine — CTH and speed scaled by track_norm so per-step contributions
+        # are consistent across tracks of different lengths.
         total_reward = (
             self.w_progress * r_prog +
-            self.w_cth      * r_cth  +
-            self.w_speed    * r_speed +
+            self.w_cth      * r_cth   * self.track_norm +
+            self.w_speed    * r_speed * self.track_norm +
             r_relative
         )
 

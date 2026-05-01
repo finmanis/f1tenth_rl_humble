@@ -288,6 +288,8 @@ class F1TenthWrapper(gym.Env):
                 )
 
         # Load all available opponent lines (left / center / right)
+        ma_cfg = config.get("multi_agent", {})
+        self.opponent_random_lines = ma_cfg.get("opponent_random_lines", True)
         self.opponent_lines = self._load_opponent_lines(config)
         self.current_opponent_line = self.opponent_lines[0]
 
@@ -612,8 +614,9 @@ class F1TenthWrapper(gym.Env):
 
         reset_options = dict(options) if options else {}
 
-        # Pick a random opponent line for this episode
-        if self.opponent_controller is not None and len(self.opponent_lines) > 1:
+        # Pick opponent line for this episode
+        if self.opponent_controller is not None and len(self.opponent_lines) > 1 \
+                and self.opponent_random_lines:
             idx = int(self.np_random.integers(0, len(self.opponent_lines)))
             self.current_opponent_line = self.opponent_lines[idx]
             self.opponent_controller.set_waypoints(self.current_opponent_line)
@@ -676,6 +679,7 @@ class F1TenthWrapper(gym.Env):
             prev_action=prev_physical_action,  # Use the ACTUAL previous action
             terminated=terminated, collision=ego_collision,
             lap_complete=(ego_lap_count >= num_laps),
+            truncated=truncated,
         )
 
         # Overtake detection: terminate and award bonus when ego passes the opponent
