@@ -1,0 +1,69 @@
+[34m[1mwandb[0m: [33mWARNING[0m The get_url method is deprecated and will be removed in a future release. Please use `run.url` instead.
+  WandB run: https://wandb.ai/finnman-penn/f1tenth_rl/runs/9k7xul41
+
+============================================================
+  Map phase 1/1: maps/houston/houston
+  Steps this phase: 3,000,000  |  Global target: 3,000,000
+============================================================
+  [Opponent lines] Loaded: maps/houston/houston_left_line.csv
+  [Opponent lines] Loaded: maps/houston/houston_centerline.csv
+  [Opponent lines] Loaded: maps/houston/houston_right_line.csv
+  Swapped to map: maps/houston/houston
+Logging to runs/multi_pp_2026-05-01_13-17-26/tensorboard/PPO_1
+[2KTraceback (most recent call last):━━━━━━━━━━━━━━━━[0m [32m0/3,000,000 [0m [ [33m0:00:03[0m < [36m-:--:--[0m , [31m? it/s[0m ]
+[2K  File "/home/ubuntu/f1tenth_rl/scripts/train.py", line 293, in <module> [ [33m0:00:03[0m < [36m-:--:--[0m , [31m? it/s[0m ]
+    main()
+[2K  File "/home/ubuntu/f1tenth_rl/scripts/train.py", line 288, in main[0m [ [33m0:00:03[0m < [36m-:--:--[0m , [31m? it/s[0m ]
+    trainer.train()
+[2K  File "/home/ubuntu/f1tenth_rl/f1tenth_rl/agents/sb3_trainer.py", line  [ [33m0:00:03[0m < [36m-:--:--[0m , [31m? it/s[0m ]
+256, in train
+    self._train_multi_map(maps, multi_map_cfg, use_wandb)
+[2K  File "/home/ubuntu/f1tenth_rl/f1tenth_rl/agents/sb3_trainer.py", line  [ [33m0:00:03[0m < [36m-:--:--[0m , [31m? it/s[0m ]
+297, in _train_multi_map
+    self.model.learn(
+[2K  File  0%[0m [38;5;237m━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m0/3,000,000 [0m [ [33m0:00:03[0m < [36m-:--:--[0m , [31m? it/s[0m ]
+"/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/st
+able_baselines3/ppo/ppo.py", line 311, in learn
+    return super().learn(
+[2K  File [0m [38;5;237m━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m0/3,000,000 [0m [ [33m0:00:03[0m < [36m-:--:--[0m , [31m? it/s[0m ]
+"/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/st
+able_baselines3/common/on_policy_algorithm.py", line 324, in learn
+    continue_training = self.collect_rollouts(self.env, callback,
+self.rollout_buffer, n_rollout_steps=self.n_steps)
+[2K  File [0m [38;5;237m━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m0/3,000,000 [0m [ [33m0:00:03[0m < [36m-:--:--[0m , [31m? it/s[0m ]
+"/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/st
+able_baselines3/common/on_policy_algorithm.py", line 218, in
+collect_rollouts
+    new_obs, rewards, dones, infos = env.step(clipped_actions)
+[2K  File [0m [38;5;237m━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m0/3,000,000 [0m [ [33m0:00:03[0m < [36m-:--:--[0m , [31m? it/s[0m ]
+"/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/st
+able_baselines3/common/vec_env/base_vec_env.py", line 222, in step
+    return self.step_wait()
+[2K  File [0m [38;5;237m━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m0/3,000,000 [0m [ [33m0:00:03[0m < [36m-:--:--[0m , [31m? it/s[0m ]
+"/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/st
+able_baselines3/common/vec_env/vec_normalize.py", line 181, in step_wait
+    obs, rewards, dones, infos = self.venv.step_wait()
+[2K  File [0m [38;5;237m━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m0/3,000,000 [0m [ [33m0:00:03[0m < [36m-:--:--[0m , [31m? it/s[0m ]
+"/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/st
+able_baselines3/common/vec_env/vec_monitor.py", line 75, in step_wait
+    obs, rewards, dones, infos = self.venv.step_wait()
+[2K  File [0m [38;5;237m━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m0/3,000,000 [0m [ [33m0:00:03[0m < [36m-:--:--[0m , [31m? it/s[0m ]
+"/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/st
+able_baselines3/common/vec_env/subproc_vec_env.py", line 137, in step_wait
+    results = [remote.recv() for remote in self.remotes]
+[2K  File [0m [38;5;237m━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m0/3,000,000 [0m [ [33m0:00:03[0m < [36m-:--:--[0m , [31m? it/s[0m ]
+"/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/st
+able_baselines3/common/vec_env/subproc_vec_env.py", line 137, in
+<listcomp>
+    results = [remote.recv() for remote in self.remotes]
+[2K  File "/usr/lib/python3.10/multiprocessing/connection.py", line 250, in [ [33m0:00:03[0m < [36m-:--:--[0m , [31m? it/s[0m ]
+recv
+    buf = self._recv_bytes()
+[2K  File "/usr/lib/python3.10/multiprocessing/connection.py", line 414, in [ [33m0:00:03[0m < [36m-:--:--[0m , [31m? it/s[0m ]
+_recv_bytes
+    buf = self._recv(4)
+[2K  File "/usr/lib/python3.10/multiprocessing/connection.py", line 383, in [ [33m0:00:03[0m < [36m-:--:--[0m , [31m? it/s[0m ]
+_recv
+    raise EOFError
+[2KEOFError0m [38;5;237m━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m0/3,000,000 [0m [ [33m0:00:03[0m < [36m-:--:--[0m , [31m? it/s[0m ]
+[35m   0%[0m [38;5;237m━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m0/3,000,000 [0m [ [33m0:00:03[0m < [36m-:--:--[0m , [31m? it/s[0m ]

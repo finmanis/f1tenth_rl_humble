@@ -1,0 +1,23 @@
+[34m[1mwandb[0m: [33mWARNING[0m The get_url method is deprecated and will be removed in a future release. Please use `run.url` instead.
+  WandB run: https://wandb.ai/finnman-penn/f1tenth_rl/runs/y7irtfpw
+
+============================================================
+  Map phase 1/1: maps/houston/houston
+  Steps this phase: 3,000,000  |  Global target: 3,000,000
+============================================================
+  [Opponent lines] Loaded: maps/houston/houston_left_line.csv
+  [Opponent lines] Loaded: maps/houston/houston_centerline.csv
+  [Opponent lines] Loaded: maps/houston/houston_right_line.csv
+  Swapped to map: maps/houston/houston
+Logging to runs/multi_pp_2026-05-01_13-23-24/tensorboard/PPO_1
+[2K---------------------------------━━━━━━━━━━━[0m [32m8,100/3,000,000 [0m [ [33m0:00:12[0m < [36m1:12:55[0m , [31m684 it/s[0m ]
+| rollout/           |          |
+|    ep_len_mean     | 242      |
+|    ep_rew_mean     | -81.5    |
+| time/              |          |
+|    fps             | 604      |
+|    iterations      | 1        |
+|    time_elapsed    | 13       |
+|    total_timesteps | 8192     |
+---------------------------------
+[2K[35m   0%[0m [38;5;237m━━━━━━━━━━━━━━━━━[0m [32m10,584/3,000,000 [0m [ [33m0:00:21[0m < [36m1:38:16[0m , [31m507 it/s[0m ]

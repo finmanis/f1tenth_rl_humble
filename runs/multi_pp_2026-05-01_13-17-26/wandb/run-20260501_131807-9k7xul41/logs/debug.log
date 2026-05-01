@@ -1,0 +1,1109 @@
+2026-05-01 13:18:07,477 INFO    MainThread:96165 [wandb_setup.py:_flush():81] Current SDK version is 0.26.0
+2026-05-01 13:18:07,480 INFO    MainThread:96165 [wandb_setup.py:_flush():81] Configure stats pid to 96165
+2026-05-01 13:18:07,480 INFO    MainThread:96165 [wandb_setup.py:_flush():81] Loading settings from environment variables
+2026-05-01 13:18:07,481 INFO    MainThread:96165 [wandb_init.py:setup_run_log_directory():721] Logging user logs to runs/multi_pp_2026-05-01_13-17-26/wandb/run-20260501_131807-9k7xul41/logs/debug.log
+2026-05-01 13:18:07,481 INFO    MainThread:96165 [wandb_init.py:setup_run_log_directory():722] Logging internal logs to runs/multi_pp_2026-05-01_13-17-26/wandb/run-20260501_131807-9k7xul41/logs/debug-internal.log
+2026-05-01 13:18:07,488 INFO    MainThread:96165 [wandb_init.py:init():848] calling init triggers
+2026-05-01 13:18:07,489 INFO    MainThread:96165 [wandb_init.py:init():853] wandb.init called with sweep_config: {}
+config: {'experiment': {'name': 'multi_pp', 'seed': 42, 'device': 'auto', 'runs_dir': 'runs', 'wandb': True, 'wandb_project': 'f1tenth_rl'}, 'env': {'map_path': 'maps/levine_race/levine_race', 'map_ext': '.png', 'num_agents': 2, 'timestep': 0.01, 'integrator': 'rk4', 'num_envs': 4, 'max_steps': 1500, 'num_laps': 999, 'sac_overrides': {'num_envs': 1}, 'td3_overrides': {'num_envs': 1}}, 'spawn': {'opponent_offset_min': 1.0, 'opponent_offset_max': 2.5, 'initial_speed': 2.0}, 'multi_agent': {'opponent': 'pure_pursuit', 'opponent_line_offset': 0.4, 'opponent_random_lines': True}, 'lidar': {'raw_beams': 1080, 'fov_deg': 270.0, 'range_max': 30.0}, 'observation': {'type': 'lidar_state', 'lidar_beams': 108, 'lidar_clip': 10.0, 'lidar_normalize': True, 'include_velocity': True, 'include_yaw_rate': True, 'include_prev_action': True, 'frame_stack': 1}, 'action': {'type': 'continuous', 'max_speed': 4.0, 'min_speed': 0.5, 'max_steer': 0.4189, 'smoothing_alpha': 0.3, 'sac_overrides': {'smoothing_alpha': 0.6}, 'td3_overrides': {'smoothing_alpha': 0.6}}, 'reward': {'type': 'custom', 'collision_penalty': -500.0, 'lap_bonus': 0.0, 'timeout_penalty': -200.0, 'survival_reward': 0.01, 'steering_change_penalty': 0.5, 'wall_proximity_penalty': 0.75, 'wall_proximity_threshold': 0.5, 'w_progress': 1.0, 'w_cth': 0.5, 'w_speed': 0.3, 'w_relative': 2.0, 'progress_weight': 10.0, 'heading_weight': 1.0, 'crosstrack_weight': 0.3, 'speed_weight': 0.3, 'overtake_bonus': 500.0, 'sac_overrides': {'collision_penalty': -500.0, 'timeout_penalty': -200.0, 'survival_reward': 0.02, 'wall_proximity_penalty': 1.0, 'wall_proximity_threshold': 0.5}, 'td3_overrides': {'collision_penalty': -500.0, 'timeout_penalty': -200.0, 'survival_reward': 0.01, 'wall_proximity_penalty': 1.0, 'wall_proximity_threshold': 0.5}}, 'algorithm': {'type': 'ppo', 'total_timesteps': 3000000, 'ppo': {'learning_rate': 0.0003, 'n_steps': 2048, 'batch_size': 256, 'n_epochs': 10, 'gamma': 0.99, 'gae_lambda': 0.95, 'clip_range': 0.2, 'ent_coef': 0.001, 'vf_coef': 0.5, 'max_grad_norm': 0.5}, 'sac': {'learning_rate': 0.0003, 'buffer_size': 100000, 'batch_size': 256, 'tau': 0.005, 'gamma': 0.99, 'learning_starts': 20000, 'train_freq': 1, 'gradient_steps': 1, 'ent_coef': 0.1}, 'td3': {'learning_rate': 0.0003, 'buffer_size': 100000, 'batch_size': 256, 'tau': 0.005, 'gamma': 0.99, 'learning_starts': 20000, 'train_freq': 1, 'gradient_steps': 1, 'policy_delay': 2}}, 'network': {'type': 'mlp', 'mlp': {'hidden_sizes': [256, 256], 'activation': 'relu'}, 'pi_layers': [256, 256], 'vf_layers': [256, 256]}, 'domain_randomization': {'enabled': True, 'mode': 'curriculum', 'curriculum_warmup': 0.2, 'curriculum_full': 0.6, 'friction': {'enabled': True, 'range': [0.7, 1.3]}, 'mass': {'enabled': True, 'range': [3.2, 4.2]}, 'lidar_noise': {'enabled': True, 'std': 0.04}}, 'expert': {'pure_pursuit': {'target_speed': 3.5}}, 'evaluation': {'eval_freq': 100000, 'n_eval_episodes': 10, 'deterministic': True}, 'callbacks': {'checkpoint_freq': 100000}, 'multi_map': {'maps': ['maps/houston/houston'], 'timesteps_per_map': 3000000}, '_wandb': {'code_path': 'code/scripts/train.py'}}
+2026-05-01 13:18:07,489 INFO    MainThread:96165 [wandb_init.py:init():896] starting backend
+2026-05-01 13:18:08,231 INFO    MainThread:96165 [wandb_init.py:init():911] sending inform_init request
+2026-05-01 13:18:08,262 INFO    MainThread:96165 [wandb_init.py:init():919] backend started and connected
+2026-05-01 13:18:08,287 INFO    MainThread:96165 [wandb_init.py:init():989] updated telemetry
+2026-05-01 13:18:08,328 INFO    MainThread:96165 [wandb_init.py:init():1013] communicating run to backend with 90.0 second timeout
+2026-05-01 13:18:09,108 INFO    MainThread:96165 [wandb_init.py:init():1058] starting run threads in backend
+2026-05-01 13:18:09,346 INFO    MainThread:96165 [wandb_run.py:_console_start():2542] atexit reg
+2026-05-01 13:18:09,347 INFO    MainThread:96165 [wandb_run.py:_redirect():2391] redirect: wrap_raw
+2026-05-01 13:18:09,347 INFO    MainThread:96165 [wandb_run.py:_redirect():2460] Wrapping output streams.
+2026-05-01 13:18:09,347 INFO    MainThread:96165 [wandb_run.py:_redirect():2483] Redirects installed.
+2026-05-01 13:18:09,349 INFO    MainThread:96165 [wandb_init.py:init():1098] run started, returning control to user process
+2026-05-01 13:18:09,349 INFO    MainThread:96165 [wandb_run.py:_config_callback():1403] config_cb None None {'obs_dim': 112, 'act_dim': 2, 'num_envs': 4, 'run_dir': 'runs/multi_pp_2026-05-01_13-17-26'}
+2026-05-01 13:18:33,827 INFO    MainThread:96165 [wandb_run.py:_tensorboard_callback():1632] tensorboard callback: runs/multi_pp_2026-05-01_13-17-26/tensorboard/PPO_1, True
+2026-05-01 13:18:37,258 INFO    wandb-AsyncioManager-main:96165 [service_client.py:_forward_responses():134] Reached EOF.
+2026-05-01 13:18:37,263 INFO    wandb-AsyncioManager-main:96165 [mailbox.py:close():155] Closing mailbox, abandoning 1 handles.
+2026-05-01 13:18:37,404 ERROR   wandb-AsyncioManager-main:96165 [asyncio_manager.py:fn_wrap_exceptions():184] Uncaught exception in run_soon callback.
+Traceback (most recent call last):
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/asyncio_manager.py", line 182, in fn_wrap_exceptions
+    await fn()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 45, in publish
+    await self._send_server_request(request)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 87, in _send_server_request
+    await self._drain_writer()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 96, in _drain_writer
+    await self._writer.drain()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 371, in drain
+    await self._protocol._drain_helper()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 167, in _drain_helper
+    raise ConnectionResetError('Connection lost')
+ConnectionResetError: Connection lost
+2026-05-01 13:18:37,522 ERROR   wandb-AsyncioManager-main:96165 [asyncio_manager.py:fn_wrap_exceptions():184] Uncaught exception in run_soon callback.
+Traceback (most recent call last):
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/asyncio_manager.py", line 182, in fn_wrap_exceptions
+    await fn()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 45, in publish
+    await self._send_server_request(request)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 78, in _send_server_request
+    raise self._broken_exc.with_traceback(self._broken_tb)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 87, in _send_server_request
+    await self._drain_writer()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 96, in _drain_writer
+    await self._writer.drain()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 371, in drain
+    await self._protocol._drain_helper()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 167, in _drain_helper
+    raise ConnectionResetError('Connection lost')
+ConnectionResetError: Connection lost
+2026-05-01 13:18:37,630 ERROR   wandb-AsyncioManager-main:96165 [asyncio_manager.py:fn_wrap_exceptions():184] Uncaught exception in run_soon callback.
+Traceback (most recent call last):
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/asyncio_manager.py", line 182, in fn_wrap_exceptions
+    await fn()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 45, in publish
+    await self._send_server_request(request)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 78, in _send_server_request
+    raise self._broken_exc.with_traceback(self._broken_tb)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 87, in _send_server_request
+    await self._drain_writer()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 96, in _drain_writer
+    await self._writer.drain()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 371, in drain
+    await self._protocol._drain_helper()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 167, in _drain_helper
+    raise ConnectionResetError('Connection lost')
+ConnectionResetError: Connection lost
+2026-05-01 13:18:37,735 ERROR   wandb-AsyncioManager-main:96165 [asyncio_manager.py:fn_wrap_exceptions():184] Uncaught exception in run_soon callback.
+Traceback (most recent call last):
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/asyncio_manager.py", line 182, in fn_wrap_exceptions
+    await fn()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 45, in publish
+    await self._send_server_request(request)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 78, in _send_server_request
+    raise self._broken_exc.with_traceback(self._broken_tb)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 87, in _send_server_request
+    await self._drain_writer()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 96, in _drain_writer
+    await self._writer.drain()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 371, in drain
+    await self._protocol._drain_helper()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 167, in _drain_helper
+    raise ConnectionResetError('Connection lost')
+ConnectionResetError: Connection lost
+2026-05-01 13:18:37,853 ERROR   wandb-AsyncioManager-main:96165 [asyncio_manager.py:fn_wrap_exceptions():184] Uncaught exception in run_soon callback.
+Traceback (most recent call last):
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/asyncio_manager.py", line 182, in fn_wrap_exceptions
+    await fn()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 45, in publish
+    await self._send_server_request(request)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 78, in _send_server_request
+    raise self._broken_exc.with_traceback(self._broken_tb)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 87, in _send_server_request
+    await self._drain_writer()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 96, in _drain_writer
+    await self._writer.drain()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 371, in drain
+    await self._protocol._drain_helper()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 167, in _drain_helper
+    raise ConnectionResetError('Connection lost')
+ConnectionResetError: Connection lost
+2026-05-01 13:18:38,039 ERROR   wandb-AsyncioManager-main:96165 [asyncio_manager.py:fn_wrap_exceptions():184] Uncaught exception in run_soon callback.
+Traceback (most recent call last):
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/asyncio_manager.py", line 182, in fn_wrap_exceptions
+    await fn()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 45, in publish
+    await self._send_server_request(request)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 78, in _send_server_request
+    raise self._broken_exc.with_traceback(self._broken_tb)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 87, in _send_server_request
+    await self._drain_writer()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 96, in _drain_writer
+    await self._writer.drain()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 371, in drain
+    await self._protocol._drain_helper()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 167, in _drain_helper
+    raise ConnectionResetError('Connection lost')
+ConnectionResetError: Connection lost
+2026-05-01 13:18:38,224 ERROR   wandb-AsyncioManager-main:96165 [asyncio_manager.py:fn_wrap_exceptions():184] Uncaught exception in run_soon callback.
+Traceback (most recent call last):
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/asyncio_manager.py", line 182, in fn_wrap_exceptions
+    await fn()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 45, in publish
+    await self._send_server_request(request)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 78, in _send_server_request
+    raise self._broken_exc.with_traceback(self._broken_tb)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 87, in _send_server_request
+    await self._drain_writer()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 96, in _drain_writer
+    await self._writer.drain()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 371, in drain
+    await self._protocol._drain_helper()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 167, in _drain_helper
+    raise ConnectionResetError('Connection lost')
+ConnectionResetError: Connection lost
+2026-05-01 13:18:38,335 ERROR   wandb-AsyncioManager-main:96165 [asyncio_manager.py:fn_wrap_exceptions():184] Uncaught exception in run_soon callback.
+Traceback (most recent call last):
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/asyncio_manager.py", line 182, in fn_wrap_exceptions
+    await fn()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 45, in publish
+    await self._send_server_request(request)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 78, in _send_server_request
+    raise self._broken_exc.with_traceback(self._broken_tb)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 87, in _send_server_request
+    await self._drain_writer()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 96, in _drain_writer
+    await self._writer.drain()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 371, in drain
+    await self._protocol._drain_helper()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 167, in _drain_helper
+    raise ConnectionResetError('Connection lost')
+ConnectionResetError: Connection lost
+2026-05-01 13:18:38,454 ERROR   wandb-AsyncioManager-main:96165 [asyncio_manager.py:fn_wrap_exceptions():184] Uncaught exception in run_soon callback.
+Traceback (most recent call last):
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/asyncio_manager.py", line 182, in fn_wrap_exceptions
+    await fn()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 45, in publish
+    await self._send_server_request(request)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 78, in _send_server_request
+    raise self._broken_exc.with_traceback(self._broken_tb)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 87, in _send_server_request
+    await self._drain_writer()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 96, in _drain_writer
+    await self._writer.drain()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 371, in drain
+    await self._protocol._drain_helper()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 167, in _drain_helper
+    raise ConnectionResetError('Connection lost')
+ConnectionResetError: Connection lost
+2026-05-01 13:18:38,576 ERROR   wandb-AsyncioManager-main:96165 [asyncio_manager.py:fn_wrap_exceptions():184] Uncaught exception in run_soon callback.
+Traceback (most recent call last):
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/asyncio_manager.py", line 182, in fn_wrap_exceptions
+    await fn()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 45, in publish
+    await self._send_server_request(request)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 78, in _send_server_request
+    raise self._broken_exc.with_traceback(self._broken_tb)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 87, in _send_server_request
+    await self._drain_writer()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 96, in _drain_writer
+    await self._writer.drain()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 371, in drain
+    await self._protocol._drain_helper()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 167, in _drain_helper
+    raise ConnectionResetError('Connection lost')
+ConnectionResetError: Connection lost
+2026-05-01 13:18:38,698 ERROR   wandb-AsyncioManager-main:96165 [asyncio_manager.py:fn_wrap_exceptions():184] Uncaught exception in run_soon callback.
+Traceback (most recent call last):
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/asyncio_manager.py", line 182, in fn_wrap_exceptions
+    await fn()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 45, in publish
+    await self._send_server_request(request)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 78, in _send_server_request
+    raise self._broken_exc.with_traceback(self._broken_tb)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 87, in _send_server_request
+    await self._drain_writer()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 96, in _drain_writer
+    await self._writer.drain()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 371, in drain
+    await self._protocol._drain_helper()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 167, in _drain_helper
+    raise ConnectionResetError('Connection lost')
+ConnectionResetError: Connection lost
+2026-05-01 13:18:38,812 ERROR   wandb-AsyncioManager-main:96165 [asyncio_manager.py:fn_wrap_exceptions():184] Uncaught exception in run_soon callback.
+Traceback (most recent call last):
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/asyncio_manager.py", line 182, in fn_wrap_exceptions
+    await fn()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 45, in publish
+    await self._send_server_request(request)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 78, in _send_server_request
+    raise self._broken_exc.with_traceback(self._broken_tb)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 87, in _send_server_request
+    await self._drain_writer()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 96, in _drain_writer
+    await self._writer.drain()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 371, in drain
+    await self._protocol._drain_helper()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 167, in _drain_helper
+    raise ConnectionResetError('Connection lost')
+ConnectionResetError: Connection lost
+2026-05-01 13:18:38,925 ERROR   wandb-AsyncioManager-main:96165 [asyncio_manager.py:fn_wrap_exceptions():184] Uncaught exception in run_soon callback.
+Traceback (most recent call last):
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/asyncio_manager.py", line 182, in fn_wrap_exceptions
+    await fn()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 45, in publish
+    await self._send_server_request(request)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 78, in _send_server_request
+    raise self._broken_exc.with_traceback(self._broken_tb)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 87, in _send_server_request
+    await self._drain_writer()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 96, in _drain_writer
+    await self._writer.drain()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 371, in drain
+    await self._protocol._drain_helper()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 167, in _drain_helper
+    raise ConnectionResetError('Connection lost')
+ConnectionResetError: Connection lost
+2026-05-01 13:18:39,052 ERROR   wandb-AsyncioManager-main:96165 [asyncio_manager.py:fn_wrap_exceptions():184] Uncaught exception in run_soon callback.
+Traceback (most recent call last):
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/asyncio_manager.py", line 182, in fn_wrap_exceptions
+    await fn()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 45, in publish
+    await self._send_server_request(request)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 78, in _send_server_request
+    raise self._broken_exc.with_traceback(self._broken_tb)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 87, in _send_server_request
+    await self._drain_writer()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 96, in _drain_writer
+    await self._writer.drain()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 371, in drain
+    await self._protocol._drain_helper()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 167, in _drain_helper
+    raise ConnectionResetError('Connection lost')
+ConnectionResetError: Connection lost
+2026-05-01 13:18:39,168 ERROR   wandb-AsyncioManager-main:96165 [asyncio_manager.py:fn_wrap_exceptions():184] Uncaught exception in run_soon callback.
+Traceback (most recent call last):
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/asyncio_manager.py", line 182, in fn_wrap_exceptions
+    await fn()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 45, in publish
+    await self._send_server_request(request)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 78, in _send_server_request
+    raise self._broken_exc.with_traceback(self._broken_tb)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 87, in _send_server_request
+    await self._drain_writer()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 96, in _drain_writer
+    await self._writer.drain()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 371, in drain
+    await self._protocol._drain_helper()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 167, in _drain_helper
+    raise ConnectionResetError('Connection lost')
+ConnectionResetError: Connection lost
+2026-05-01 13:18:39,317 ERROR   wandb-AsyncioManager-main:96165 [asyncio_manager.py:fn_wrap_exceptions():184] Uncaught exception in run_soon callback.
+Traceback (most recent call last):
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/asyncio_manager.py", line 182, in fn_wrap_exceptions
+    await fn()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 45, in publish
+    await self._send_server_request(request)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 78, in _send_server_request
+    raise self._broken_exc.with_traceback(self._broken_tb)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 87, in _send_server_request
+    await self._drain_writer()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 96, in _drain_writer
+    await self._writer.drain()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 371, in drain
+    await self._protocol._drain_helper()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 167, in _drain_helper
+    raise ConnectionResetError('Connection lost')
+ConnectionResetError: Connection lost
+2026-05-01 13:18:39,494 ERROR   wandb-AsyncioManager-main:96165 [asyncio_manager.py:fn_wrap_exceptions():184] Uncaught exception in run_soon callback.
+Traceback (most recent call last):
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/asyncio_manager.py", line 182, in fn_wrap_exceptions
+    await fn()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 45, in publish
+    await self._send_server_request(request)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 78, in _send_server_request
+    raise self._broken_exc.with_traceback(self._broken_tb)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 87, in _send_server_request
+    await self._drain_writer()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 96, in _drain_writer
+    await self._writer.drain()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 371, in drain
+    await self._protocol._drain_helper()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 167, in _drain_helper
+    raise ConnectionResetError('Connection lost')
+ConnectionResetError: Connection lost
+2026-05-01 13:18:39,609 ERROR   wandb-AsyncioManager-main:96165 [asyncio_manager.py:fn_wrap_exceptions():184] Uncaught exception in run_soon callback.
+Traceback (most recent call last):
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/asyncio_manager.py", line 182, in fn_wrap_exceptions
+    await fn()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 45, in publish
+    await self._send_server_request(request)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 78, in _send_server_request
+    raise self._broken_exc.with_traceback(self._broken_tb)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 87, in _send_server_request
+    await self._drain_writer()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 96, in _drain_writer
+    await self._writer.drain()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 371, in drain
+    await self._protocol._drain_helper()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 167, in _drain_helper
+    raise ConnectionResetError('Connection lost')
+ConnectionResetError: Connection lost
+2026-05-01 13:18:39,732 ERROR   wandb-AsyncioManager-main:96165 [asyncio_manager.py:fn_wrap_exceptions():184] Uncaught exception in run_soon callback.
+Traceback (most recent call last):
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/asyncio_manager.py", line 182, in fn_wrap_exceptions
+    await fn()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 45, in publish
+    await self._send_server_request(request)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 78, in _send_server_request
+    raise self._broken_exc.with_traceback(self._broken_tb)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 87, in _send_server_request
+    await self._drain_writer()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 96, in _drain_writer
+    await self._writer.drain()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 371, in drain
+    await self._protocol._drain_helper()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 167, in _drain_helper
+    raise ConnectionResetError('Connection lost')
+ConnectionResetError: Connection lost
+2026-05-01 13:18:39,844 ERROR   wandb-AsyncioManager-main:96165 [asyncio_manager.py:fn_wrap_exceptions():184] Uncaught exception in run_soon callback.
+Traceback (most recent call last):
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/asyncio_manager.py", line 182, in fn_wrap_exceptions
+    await fn()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 45, in publish
+    await self._send_server_request(request)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 78, in _send_server_request
+    raise self._broken_exc.with_traceback(self._broken_tb)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 87, in _send_server_request
+    await self._drain_writer()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 96, in _drain_writer
+    await self._writer.drain()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 371, in drain
+    await self._protocol._drain_helper()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 167, in _drain_helper
+    raise ConnectionResetError('Connection lost')
+ConnectionResetError: Connection lost
+2026-05-01 13:18:39,985 ERROR   wandb-AsyncioManager-main:96165 [asyncio_manager.py:fn_wrap_exceptions():184] Uncaught exception in run_soon callback.
+Traceback (most recent call last):
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/asyncio_manager.py", line 182, in fn_wrap_exceptions
+    await fn()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 45, in publish
+    await self._send_server_request(request)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 78, in _send_server_request
+    raise self._broken_exc.with_traceback(self._broken_tb)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 87, in _send_server_request
+    await self._drain_writer()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 96, in _drain_writer
+    await self._writer.drain()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 371, in drain
+    await self._protocol._drain_helper()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 167, in _drain_helper
+    raise ConnectionResetError('Connection lost')
+ConnectionResetError: Connection lost
+2026-05-01 13:18:40,109 ERROR   wandb-AsyncioManager-main:96165 [asyncio_manager.py:fn_wrap_exceptions():184] Uncaught exception in run_soon callback.
+Traceback (most recent call last):
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/asyncio_manager.py", line 182, in fn_wrap_exceptions
+    await fn()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 45, in publish
+    await self._send_server_request(request)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 78, in _send_server_request
+    raise self._broken_exc.with_traceback(self._broken_tb)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 87, in _send_server_request
+    await self._drain_writer()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 96, in _drain_writer
+    await self._writer.drain()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 371, in drain
+    await self._protocol._drain_helper()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 167, in _drain_helper
+    raise ConnectionResetError('Connection lost')
+ConnectionResetError: Connection lost
+2026-05-01 13:18:40,220 ERROR   wandb-AsyncioManager-main:96165 [asyncio_manager.py:fn_wrap_exceptions():184] Uncaught exception in run_soon callback.
+Traceback (most recent call last):
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/asyncio_manager.py", line 182, in fn_wrap_exceptions
+    await fn()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 45, in publish
+    await self._send_server_request(request)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 78, in _send_server_request
+    raise self._broken_exc.with_traceback(self._broken_tb)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 87, in _send_server_request
+    await self._drain_writer()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 96, in _drain_writer
+    await self._writer.drain()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 371, in drain
+    await self._protocol._drain_helper()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 167, in _drain_helper
+    raise ConnectionResetError('Connection lost')
+ConnectionResetError: Connection lost
+2026-05-01 13:18:40,351 ERROR   wandb-AsyncioManager-main:96165 [asyncio_manager.py:fn_wrap_exceptions():184] Uncaught exception in run_soon callback.
+Traceback (most recent call last):
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/asyncio_manager.py", line 182, in fn_wrap_exceptions
+    await fn()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 45, in publish
+    await self._send_server_request(request)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 78, in _send_server_request
+    raise self._broken_exc.with_traceback(self._broken_tb)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 87, in _send_server_request
+    await self._drain_writer()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 96, in _drain_writer
+    await self._writer.drain()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 371, in drain
+    await self._protocol._drain_helper()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 167, in _drain_helper
+    raise ConnectionResetError('Connection lost')
+ConnectionResetError: Connection lost
+2026-05-01 13:18:40,468 ERROR   wandb-AsyncioManager-main:96165 [asyncio_manager.py:fn_wrap_exceptions():184] Uncaught exception in run_soon callback.
+Traceback (most recent call last):
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/asyncio_manager.py", line 182, in fn_wrap_exceptions
+    await fn()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 45, in publish
+    await self._send_server_request(request)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 78, in _send_server_request
+    raise self._broken_exc.with_traceback(self._broken_tb)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 87, in _send_server_request
+    await self._drain_writer()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 96, in _drain_writer
+    await self._writer.drain()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 371, in drain
+    await self._protocol._drain_helper()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 167, in _drain_helper
+    raise ConnectionResetError('Connection lost')
+ConnectionResetError: Connection lost
+2026-05-01 13:18:40,575 ERROR   wandb-AsyncioManager-main:96165 [asyncio_manager.py:fn_wrap_exceptions():184] Uncaught exception in run_soon callback.
+Traceback (most recent call last):
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/asyncio_manager.py", line 182, in fn_wrap_exceptions
+    await fn()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 45, in publish
+    await self._send_server_request(request)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 78, in _send_server_request
+    raise self._broken_exc.with_traceback(self._broken_tb)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 87, in _send_server_request
+    await self._drain_writer()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 96, in _drain_writer
+    await self._writer.drain()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 371, in drain
+    await self._protocol._drain_helper()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 167, in _drain_helper
+    raise ConnectionResetError('Connection lost')
+ConnectionResetError: Connection lost
+2026-05-01 13:18:40,734 ERROR   wandb-AsyncioManager-main:96165 [asyncio_manager.py:fn_wrap_exceptions():184] Uncaught exception in run_soon callback.
+Traceback (most recent call last):
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/asyncio_manager.py", line 182, in fn_wrap_exceptions
+    await fn()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 45, in publish
+    await self._send_server_request(request)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 78, in _send_server_request
+    raise self._broken_exc.with_traceback(self._broken_tb)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 87, in _send_server_request
+    await self._drain_writer()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 96, in _drain_writer
+    await self._writer.drain()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 371, in drain
+    await self._protocol._drain_helper()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 167, in _drain_helper
+    raise ConnectionResetError('Connection lost')
+ConnectionResetError: Connection lost
+2026-05-01 13:18:40,909 ERROR   wandb-AsyncioManager-main:96165 [asyncio_manager.py:fn_wrap_exceptions():184] Uncaught exception in run_soon callback.
+Traceback (most recent call last):
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/asyncio_manager.py", line 182, in fn_wrap_exceptions
+    await fn()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 45, in publish
+    await self._send_server_request(request)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 78, in _send_server_request
+    raise self._broken_exc.with_traceback(self._broken_tb)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 87, in _send_server_request
+    await self._drain_writer()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 96, in _drain_writer
+    await self._writer.drain()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 371, in drain
+    await self._protocol._drain_helper()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 167, in _drain_helper
+    raise ConnectionResetError('Connection lost')
+ConnectionResetError: Connection lost
+2026-05-01 13:18:41,018 ERROR   wandb-AsyncioManager-main:96165 [asyncio_manager.py:fn_wrap_exceptions():184] Uncaught exception in run_soon callback.
+Traceback (most recent call last):
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/asyncio_manager.py", line 182, in fn_wrap_exceptions
+    await fn()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 45, in publish
+    await self._send_server_request(request)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 78, in _send_server_request
+    raise self._broken_exc.with_traceback(self._broken_tb)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 87, in _send_server_request
+    await self._drain_writer()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 96, in _drain_writer
+    await self._writer.drain()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 371, in drain
+    await self._protocol._drain_helper()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 167, in _drain_helper
+    raise ConnectionResetError('Connection lost')
+ConnectionResetError: Connection lost
+2026-05-01 13:18:41,162 ERROR   wandb-AsyncioManager-main:96165 [asyncio_manager.py:fn_wrap_exceptions():184] Uncaught exception in run_soon callback.
+Traceback (most recent call last):
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/asyncio_manager.py", line 182, in fn_wrap_exceptions
+    await fn()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 45, in publish
+    await self._send_server_request(request)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 78, in _send_server_request
+    raise self._broken_exc.with_traceback(self._broken_tb)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 87, in _send_server_request
+    await self._drain_writer()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 96, in _drain_writer
+    await self._writer.drain()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 371, in drain
+    await self._protocol._drain_helper()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 167, in _drain_helper
+    raise ConnectionResetError('Connection lost')
+ConnectionResetError: Connection lost
+2026-05-01 13:18:41,324 ERROR   wandb-AsyncioManager-main:96165 [asyncio_manager.py:fn_wrap_exceptions():184] Uncaught exception in run_soon callback.
+Traceback (most recent call last):
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/asyncio_manager.py", line 182, in fn_wrap_exceptions
+    await fn()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 45, in publish
+    await self._send_server_request(request)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 78, in _send_server_request
+    raise self._broken_exc.with_traceback(self._broken_tb)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 87, in _send_server_request
+    await self._drain_writer()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 96, in _drain_writer
+    await self._writer.drain()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 371, in drain
+    await self._protocol._drain_helper()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 167, in _drain_helper
+    raise ConnectionResetError('Connection lost')
+ConnectionResetError: Connection lost
+2026-05-01 13:18:41,435 ERROR   wandb-AsyncioManager-main:96165 [asyncio_manager.py:fn_wrap_exceptions():184] Uncaught exception in run_soon callback.
+Traceback (most recent call last):
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/asyncio_manager.py", line 182, in fn_wrap_exceptions
+    await fn()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 45, in publish
+    await self._send_server_request(request)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 78, in _send_server_request
+    raise self._broken_exc.with_traceback(self._broken_tb)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 87, in _send_server_request
+    await self._drain_writer()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 96, in _drain_writer
+    await self._writer.drain()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 371, in drain
+    await self._protocol._drain_helper()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 167, in _drain_helper
+    raise ConnectionResetError('Connection lost')
+ConnectionResetError: Connection lost
+2026-05-01 13:18:41,588 ERROR   wandb-AsyncioManager-main:96165 [asyncio_manager.py:fn_wrap_exceptions():184] Uncaught exception in run_soon callback.
+Traceback (most recent call last):
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/asyncio_manager.py", line 182, in fn_wrap_exceptions
+    await fn()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 45, in publish
+    await self._send_server_request(request)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 78, in _send_server_request
+    raise self._broken_exc.with_traceback(self._broken_tb)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 87, in _send_server_request
+    await self._drain_writer()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 96, in _drain_writer
+    await self._writer.drain()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 371, in drain
+    await self._protocol._drain_helper()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 167, in _drain_helper
+    raise ConnectionResetError('Connection lost')
+ConnectionResetError: Connection lost
+2026-05-01 13:18:41,698 ERROR   wandb-AsyncioManager-main:96165 [asyncio_manager.py:fn_wrap_exceptions():184] Uncaught exception in run_soon callback.
+Traceback (most recent call last):
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/asyncio_manager.py", line 182, in fn_wrap_exceptions
+    await fn()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 45, in publish
+    await self._send_server_request(request)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 78, in _send_server_request
+    raise self._broken_exc.with_traceback(self._broken_tb)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 87, in _send_server_request
+    await self._drain_writer()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 96, in _drain_writer
+    await self._writer.drain()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 371, in drain
+    await self._protocol._drain_helper()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 167, in _drain_helper
+    raise ConnectionResetError('Connection lost')
+ConnectionResetError: Connection lost
+2026-05-01 13:18:41,839 ERROR   wandb-AsyncioManager-main:96165 [asyncio_manager.py:fn_wrap_exceptions():184] Uncaught exception in run_soon callback.
+Traceback (most recent call last):
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/asyncio_manager.py", line 182, in fn_wrap_exceptions
+    await fn()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 45, in publish
+    await self._send_server_request(request)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 78, in _send_server_request
+    raise self._broken_exc.with_traceback(self._broken_tb)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 87, in _send_server_request
+    await self._drain_writer()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 96, in _drain_writer
+    await self._writer.drain()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 371, in drain
+    await self._protocol._drain_helper()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 167, in _drain_helper
+    raise ConnectionResetError('Connection lost')
+ConnectionResetError: Connection lost
+2026-05-01 13:18:41,956 ERROR   wandb-AsyncioManager-main:96165 [asyncio_manager.py:fn_wrap_exceptions():184] Uncaught exception in run_soon callback.
+Traceback (most recent call last):
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/asyncio_manager.py", line 182, in fn_wrap_exceptions
+    await fn()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 45, in publish
+    await self._send_server_request(request)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 78, in _send_server_request
+    raise self._broken_exc.with_traceback(self._broken_tb)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 87, in _send_server_request
+    await self._drain_writer()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 96, in _drain_writer
+    await self._writer.drain()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 371, in drain
+    await self._protocol._drain_helper()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 167, in _drain_helper
+    raise ConnectionResetError('Connection lost')
+ConnectionResetError: Connection lost
+2026-05-01 13:18:42,067 ERROR   wandb-AsyncioManager-main:96165 [asyncio_manager.py:fn_wrap_exceptions():184] Uncaught exception in run_soon callback.
+Traceback (most recent call last):
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/asyncio_manager.py", line 182, in fn_wrap_exceptions
+    await fn()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 45, in publish
+    await self._send_server_request(request)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 78, in _send_server_request
+    raise self._broken_exc.with_traceback(self._broken_tb)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 87, in _send_server_request
+    await self._drain_writer()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 96, in _drain_writer
+    await self._writer.drain()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 371, in drain
+    await self._protocol._drain_helper()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 167, in _drain_helper
+    raise ConnectionResetError('Connection lost')
+ConnectionResetError: Connection lost
+2026-05-01 13:18:42,216 ERROR   wandb-AsyncioManager-main:96165 [asyncio_manager.py:fn_wrap_exceptions():184] Uncaught exception in run_soon callback.
+Traceback (most recent call last):
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/asyncio_manager.py", line 182, in fn_wrap_exceptions
+    await fn()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 45, in publish
+    await self._send_server_request(request)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 78, in _send_server_request
+    raise self._broken_exc.with_traceback(self._broken_tb)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 87, in _send_server_request
+    await self._drain_writer()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 96, in _drain_writer
+    await self._writer.drain()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 371, in drain
+    await self._protocol._drain_helper()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 167, in _drain_helper
+    raise ConnectionResetError('Connection lost')
+ConnectionResetError: Connection lost
+2026-05-01 13:18:42,387 ERROR   wandb-AsyncioManager-main:96165 [asyncio_manager.py:fn_wrap_exceptions():184] Uncaught exception in run_soon callback.
+Traceback (most recent call last):
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/asyncio_manager.py", line 182, in fn_wrap_exceptions
+    await fn()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 45, in publish
+    await self._send_server_request(request)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 78, in _send_server_request
+    raise self._broken_exc.with_traceback(self._broken_tb)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 87, in _send_server_request
+    await self._drain_writer()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 96, in _drain_writer
+    await self._writer.drain()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 371, in drain
+    await self._protocol._drain_helper()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 167, in _drain_helper
+    raise ConnectionResetError('Connection lost')
+ConnectionResetError: Connection lost
+2026-05-01 13:18:42,510 ERROR   wandb-AsyncioManager-main:96165 [asyncio_manager.py:fn_wrap_exceptions():184] Uncaught exception in run_soon callback.
+Traceback (most recent call last):
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/asyncio_manager.py", line 182, in fn_wrap_exceptions
+    await fn()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 45, in publish
+    await self._send_server_request(request)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 78, in _send_server_request
+    raise self._broken_exc.with_traceback(self._broken_tb)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 87, in _send_server_request
+    await self._drain_writer()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 96, in _drain_writer
+    await self._writer.drain()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 371, in drain
+    await self._protocol._drain_helper()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 167, in _drain_helper
+    raise ConnectionResetError('Connection lost')
+ConnectionResetError: Connection lost
+2026-05-01 13:18:42,619 ERROR   wandb-AsyncioManager-main:96165 [asyncio_manager.py:fn_wrap_exceptions():184] Uncaught exception in run_soon callback.
+Traceback (most recent call last):
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/asyncio_manager.py", line 182, in fn_wrap_exceptions
+    await fn()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 45, in publish
+    await self._send_server_request(request)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 78, in _send_server_request
+    raise self._broken_exc.with_traceback(self._broken_tb)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 87, in _send_server_request
+    await self._drain_writer()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 96, in _drain_writer
+    await self._writer.drain()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 371, in drain
+    await self._protocol._drain_helper()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 167, in _drain_helper
+    raise ConnectionResetError('Connection lost')
+ConnectionResetError: Connection lost
+2026-05-01 13:18:42,745 ERROR   wandb-AsyncioManager-main:96165 [asyncio_manager.py:fn_wrap_exceptions():184] Uncaught exception in run_soon callback.
+Traceback (most recent call last):
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/asyncio_manager.py", line 182, in fn_wrap_exceptions
+    await fn()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 45, in publish
+    await self._send_server_request(request)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 78, in _send_server_request
+    raise self._broken_exc.with_traceback(self._broken_tb)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 87, in _send_server_request
+    await self._drain_writer()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 96, in _drain_writer
+    await self._writer.drain()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 371, in drain
+    await self._protocol._drain_helper()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 167, in _drain_helper
+    raise ConnectionResetError('Connection lost')
+ConnectionResetError: Connection lost
+2026-05-01 13:18:42,877 ERROR   wandb-AsyncioManager-main:96165 [asyncio_manager.py:fn_wrap_exceptions():184] Uncaught exception in run_soon callback.
+Traceback (most recent call last):
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/asyncio_manager.py", line 182, in fn_wrap_exceptions
+    await fn()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 45, in publish
+    await self._send_server_request(request)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 78, in _send_server_request
+    raise self._broken_exc.with_traceback(self._broken_tb)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 87, in _send_server_request
+    await self._drain_writer()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 96, in _drain_writer
+    await self._writer.drain()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 371, in drain
+    await self._protocol._drain_helper()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 167, in _drain_helper
+    raise ConnectionResetError('Connection lost')
+ConnectionResetError: Connection lost
+2026-05-01 13:18:43,060 ERROR   wandb-AsyncioManager-main:96165 [asyncio_manager.py:fn_wrap_exceptions():184] Uncaught exception in run_soon callback.
+Traceback (most recent call last):
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/asyncio_manager.py", line 182, in fn_wrap_exceptions
+    await fn()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 45, in publish
+    await self._send_server_request(request)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 78, in _send_server_request
+    raise self._broken_exc.with_traceback(self._broken_tb)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 87, in _send_server_request
+    await self._drain_writer()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 96, in _drain_writer
+    await self._writer.drain()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 371, in drain
+    await self._protocol._drain_helper()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 167, in _drain_helper
+    raise ConnectionResetError('Connection lost')
+ConnectionResetError: Connection lost
+2026-05-01 13:18:43,185 ERROR   wandb-AsyncioManager-main:96165 [asyncio_manager.py:fn_wrap_exceptions():184] Uncaught exception in run_soon callback.
+Traceback (most recent call last):
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/asyncio_manager.py", line 182, in fn_wrap_exceptions
+    await fn()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 45, in publish
+    await self._send_server_request(request)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 78, in _send_server_request
+    raise self._broken_exc.with_traceback(self._broken_tb)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 87, in _send_server_request
+    await self._drain_writer()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 96, in _drain_writer
+    await self._writer.drain()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 371, in drain
+    await self._protocol._drain_helper()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 167, in _drain_helper
+    raise ConnectionResetError('Connection lost')
+ConnectionResetError: Connection lost
+2026-05-01 13:18:43,295 ERROR   wandb-AsyncioManager-main:96165 [asyncio_manager.py:fn_wrap_exceptions():184] Uncaught exception in run_soon callback.
+Traceback (most recent call last):
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/asyncio_manager.py", line 182, in fn_wrap_exceptions
+    await fn()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 45, in publish
+    await self._send_server_request(request)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 78, in _send_server_request
+    raise self._broken_exc.with_traceback(self._broken_tb)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 87, in _send_server_request
+    await self._drain_writer()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 96, in _drain_writer
+    await self._writer.drain()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 371, in drain
+    await self._protocol._drain_helper()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 167, in _drain_helper
+    raise ConnectionResetError('Connection lost')
+ConnectionResetError: Connection lost
+2026-05-01 13:18:43,418 ERROR   wandb-AsyncioManager-main:96165 [asyncio_manager.py:fn_wrap_exceptions():184] Uncaught exception in run_soon callback.
+Traceback (most recent call last):
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/asyncio_manager.py", line 182, in fn_wrap_exceptions
+    await fn()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 45, in publish
+    await self._send_server_request(request)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 78, in _send_server_request
+    raise self._broken_exc.with_traceback(self._broken_tb)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 87, in _send_server_request
+    await self._drain_writer()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 96, in _drain_writer
+    await self._writer.drain()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 371, in drain
+    await self._protocol._drain_helper()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 167, in _drain_helper
+    raise ConnectionResetError('Connection lost')
+ConnectionResetError: Connection lost
+2026-05-01 13:18:43,552 ERROR   wandb-AsyncioManager-main:96165 [asyncio_manager.py:fn_wrap_exceptions():184] Uncaught exception in run_soon callback.
+Traceback (most recent call last):
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/asyncio_manager.py", line 182, in fn_wrap_exceptions
+    await fn()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 45, in publish
+    await self._send_server_request(request)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 78, in _send_server_request
+    raise self._broken_exc.with_traceback(self._broken_tb)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 87, in _send_server_request
+    await self._drain_writer()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 96, in _drain_writer
+    await self._writer.drain()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 371, in drain
+    await self._protocol._drain_helper()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 167, in _drain_helper
+    raise ConnectionResetError('Connection lost')
+ConnectionResetError: Connection lost
+2026-05-01 13:18:43,559 ERROR   wandb-AsyncioManager-main:96165 [asyncio_manager.py:fn_wrap_exceptions():184] Uncaught exception in run_soon callback.
+Traceback (most recent call last):
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/asyncio_manager.py", line 182, in fn_wrap_exceptions
+    await fn()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 45, in publish
+    await self._send_server_request(request)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 78, in _send_server_request
+    raise self._broken_exc.with_traceback(self._broken_tb)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 87, in _send_server_request
+    await self._drain_writer()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 96, in _drain_writer
+    await self._writer.drain()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 371, in drain
+    await self._protocol._drain_helper()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 167, in _drain_helper
+    raise ConnectionResetError('Connection lost')
+ConnectionResetError: Connection lost
+2026-05-01 13:18:43,564 ERROR   wandb-AsyncioManager-main:96165 [asyncio_manager.py:fn_wrap_exceptions():184] Uncaught exception in run_soon callback.
+Traceback (most recent call last):
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/asyncio_manager.py", line 182, in fn_wrap_exceptions
+    await fn()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 45, in publish
+    await self._send_server_request(request)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 78, in _send_server_request
+    raise self._broken_exc.with_traceback(self._broken_tb)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 87, in _send_server_request
+    await self._drain_writer()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 96, in _drain_writer
+    await self._writer.drain()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 371, in drain
+    await self._protocol._drain_helper()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 167, in _drain_helper
+    raise ConnectionResetError('Connection lost')
+ConnectionResetError: Connection lost
+2026-05-01 13:18:43,569 ERROR   wandb-AsyncioManager-main:96165 [asyncio_manager.py:fn_wrap_exceptions():184] Uncaught exception in run_soon callback.
+Traceback (most recent call last):
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/asyncio_manager.py", line 182, in fn_wrap_exceptions
+    await fn()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 45, in publish
+    await self._send_server_request(request)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 78, in _send_server_request
+    raise self._broken_exc.with_traceback(self._broken_tb)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 87, in _send_server_request
+    await self._drain_writer()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 96, in _drain_writer
+    await self._writer.drain()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 371, in drain
+    await self._protocol._drain_helper()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 167, in _drain_helper
+    raise ConnectionResetError('Connection lost')
+ConnectionResetError: Connection lost
+2026-05-01 13:18:43,577 ERROR   wandb-AsyncioManager-main:96165 [asyncio_manager.py:fn_wrap_exceptions():184] Uncaught exception in run_soon callback.
+Traceback (most recent call last):
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/asyncio_manager.py", line 182, in fn_wrap_exceptions
+    await fn()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 45, in publish
+    await self._send_server_request(request)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 78, in _send_server_request
+    raise self._broken_exc.with_traceback(self._broken_tb)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 87, in _send_server_request
+    await self._drain_writer()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 96, in _drain_writer
+    await self._writer.drain()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 371, in drain
+    await self._protocol._drain_helper()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 167, in _drain_helper
+    raise ConnectionResetError('Connection lost')
+ConnectionResetError: Connection lost
+2026-05-01 13:18:43,581 ERROR   wandb-AsyncioManager-main:96165 [asyncio_manager.py:fn_wrap_exceptions():184] Uncaught exception in run_soon callback.
+Traceback (most recent call last):
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/asyncio_manager.py", line 182, in fn_wrap_exceptions
+    await fn()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 45, in publish
+    await self._send_server_request(request)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 78, in _send_server_request
+    raise self._broken_exc.with_traceback(self._broken_tb)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 87, in _send_server_request
+    await self._drain_writer()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 96, in _drain_writer
+    await self._writer.drain()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 371, in drain
+    await self._protocol._drain_helper()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 167, in _drain_helper
+    raise ConnectionResetError('Connection lost')
+ConnectionResetError: Connection lost
+2026-05-01 13:18:43,586 ERROR   wandb-AsyncioManager-main:96165 [asyncio_manager.py:fn_wrap_exceptions():184] Uncaught exception in run_soon callback.
+Traceback (most recent call last):
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/asyncio_manager.py", line 182, in fn_wrap_exceptions
+    await fn()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 45, in publish
+    await self._send_server_request(request)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 78, in _send_server_request
+    raise self._broken_exc.with_traceback(self._broken_tb)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 87, in _send_server_request
+    await self._drain_writer()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 96, in _drain_writer
+    await self._writer.drain()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 371, in drain
+    await self._protocol._drain_helper()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 167, in _drain_helper
+    raise ConnectionResetError('Connection lost')
+ConnectionResetError: Connection lost
+2026-05-01 13:18:43,590 ERROR   wandb-AsyncioManager-main:96165 [asyncio_manager.py:fn_wrap_exceptions():184] Uncaught exception in run_soon callback.
+Traceback (most recent call last):
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/asyncio_manager.py", line 182, in fn_wrap_exceptions
+    await fn()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 45, in publish
+    await self._send_server_request(request)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 78, in _send_server_request
+    raise self._broken_exc.with_traceback(self._broken_tb)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 87, in _send_server_request
+    await self._drain_writer()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 96, in _drain_writer
+    await self._writer.drain()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 371, in drain
+    await self._protocol._drain_helper()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 167, in _drain_helper
+    raise ConnectionResetError('Connection lost')
+ConnectionResetError: Connection lost
+2026-05-01 13:18:43,599 ERROR   wandb-AsyncioManager-main:96165 [asyncio_manager.py:fn_wrap_exceptions():184] Uncaught exception in run_soon callback.
+Traceback (most recent call last):
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/asyncio_manager.py", line 182, in fn_wrap_exceptions
+    await fn()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 45, in publish
+    await self._send_server_request(request)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 78, in _send_server_request
+    raise self._broken_exc.with_traceback(self._broken_tb)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 87, in _send_server_request
+    await self._drain_writer()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 96, in _drain_writer
+    await self._writer.drain()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 371, in drain
+    await self._protocol._drain_helper()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 167, in _drain_helper
+    raise ConnectionResetError('Connection lost')
+ConnectionResetError: Connection lost
+2026-05-01 13:18:43,602 ERROR   wandb-AsyncioManager-main:96165 [asyncio_manager.py:fn_wrap_exceptions():184] Uncaught exception in run_soon callback.
+Traceback (most recent call last):
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/asyncio_manager.py", line 182, in fn_wrap_exceptions
+    await fn()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 45, in publish
+    await self._send_server_request(request)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 78, in _send_server_request
+    raise self._broken_exc.with_traceback(self._broken_tb)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 87, in _send_server_request
+    await self._drain_writer()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 96, in _drain_writer
+    await self._writer.drain()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 371, in drain
+    await self._protocol._drain_helper()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 167, in _drain_helper
+    raise ConnectionResetError('Connection lost')
+ConnectionResetError: Connection lost
+2026-05-01 13:18:43,607 ERROR   wandb-AsyncioManager-main:96165 [asyncio_manager.py:fn_wrap_exceptions():184] Uncaught exception in run_soon callback.
+Traceback (most recent call last):
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/asyncio_manager.py", line 182, in fn_wrap_exceptions
+    await fn()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 45, in publish
+    await self._send_server_request(request)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 78, in _send_server_request
+    raise self._broken_exc.with_traceback(self._broken_tb)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 87, in _send_server_request
+    await self._drain_writer()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 96, in _drain_writer
+    await self._writer.drain()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 371, in drain
+    await self._protocol._drain_helper()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 167, in _drain_helper
+    raise ConnectionResetError('Connection lost')
+ConnectionResetError: Connection lost
+2026-05-01 13:18:43,610 ERROR   wandb-AsyncioManager-main:96165 [asyncio_manager.py:fn_wrap_exceptions():184] Uncaught exception in run_soon callback.
+Traceback (most recent call last):
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/asyncio_manager.py", line 182, in fn_wrap_exceptions
+    await fn()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 45, in publish
+    await self._send_server_request(request)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 78, in _send_server_request
+    raise self._broken_exc.with_traceback(self._broken_tb)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 87, in _send_server_request
+    await self._drain_writer()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 96, in _drain_writer
+    await self._writer.drain()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 371, in drain
+    await self._protocol._drain_helper()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 167, in _drain_helper
+    raise ConnectionResetError('Connection lost')
+ConnectionResetError: Connection lost
+2026-05-01 13:18:43,612 ERROR   wandb-AsyncioManager-main:96165 [asyncio_manager.py:fn_wrap_exceptions():184] Uncaught exception in run_soon callback.
+Traceback (most recent call last):
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/asyncio_manager.py", line 182, in fn_wrap_exceptions
+    await fn()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 45, in publish
+    await self._send_server_request(request)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 78, in _send_server_request
+    raise self._broken_exc.with_traceback(self._broken_tb)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 87, in _send_server_request
+    await self._drain_writer()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 96, in _drain_writer
+    await self._writer.drain()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 371, in drain
+    await self._protocol._drain_helper()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 167, in _drain_helper
+    raise ConnectionResetError('Connection lost')
+ConnectionResetError: Connection lost
+2026-05-01 13:18:43,613 ERROR   wandb-AsyncioManager-main:96165 [asyncio_manager.py:fn_wrap_exceptions():184] Uncaught exception in run_soon callback.
+Traceback (most recent call last):
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/asyncio_manager.py", line 182, in fn_wrap_exceptions
+    await fn()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 45, in publish
+    await self._send_server_request(request)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 78, in _send_server_request
+    raise self._broken_exc.with_traceback(self._broken_tb)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 87, in _send_server_request
+    await self._drain_writer()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 96, in _drain_writer
+    await self._writer.drain()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 371, in drain
+    await self._protocol._drain_helper()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 167, in _drain_helper
+    raise ConnectionResetError('Connection lost')
+ConnectionResetError: Connection lost
+2026-05-01 13:18:43,615 ERROR   wandb-AsyncioManager-main:96165 [asyncio_manager.py:fn_wrap_exceptions():184] Uncaught exception in run_soon callback.
+Traceback (most recent call last):
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/asyncio_manager.py", line 182, in fn_wrap_exceptions
+    await fn()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 45, in publish
+    await self._send_server_request(request)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 78, in _send_server_request
+    raise self._broken_exc.with_traceback(self._broken_tb)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 87, in _send_server_request
+    await self._drain_writer()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 96, in _drain_writer
+    await self._writer.drain()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 371, in drain
+    await self._protocol._drain_helper()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 167, in _drain_helper
+    raise ConnectionResetError('Connection lost')
+ConnectionResetError: Connection lost
+2026-05-01 13:18:43,616 ERROR   wandb-AsyncioManager-main:96165 [asyncio_manager.py:fn_wrap_exceptions():184] Uncaught exception in run_soon callback.
+Traceback (most recent call last):
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/asyncio_manager.py", line 182, in fn_wrap_exceptions
+    await fn()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 45, in publish
+    await self._send_server_request(request)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 78, in _send_server_request
+    raise self._broken_exc.with_traceback(self._broken_tb)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 87, in _send_server_request
+    await self._drain_writer()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 96, in _drain_writer
+    await self._writer.drain()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 371, in drain
+    await self._protocol._drain_helper()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 167, in _drain_helper
+    raise ConnectionResetError('Connection lost')
+ConnectionResetError: Connection lost
+2026-05-01 13:18:43,717 ERROR   wandb-AsyncioManager-main:96165 [asyncio_manager.py:fn_wrap_exceptions():184] Uncaught exception in run_soon callback.
+Traceback (most recent call last):
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/asyncio_manager.py", line 182, in fn_wrap_exceptions
+    await fn()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 45, in publish
+    await self._send_server_request(request)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 78, in _send_server_request
+    raise self._broken_exc.with_traceback(self._broken_tb)
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 87, in _send_server_request
+    await self._drain_writer()
+  File "/home/ubuntu/f1tenth_rl/f1tenth_gym/.venv/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 96, in _drain_writer
+    await self._writer.drain()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 371, in drain
+    await self._protocol._drain_helper()
+  File "/usr/lib/python3.10/asyncio/streams.py", line 167, in _drain_helper
+    raise ConnectionResetError('Connection lost')
+ConnectionResetError: Connection lost

@@ -1,0 +1,17 @@
+{"time":"2026-05-01T13:23:34.662941251-04:00","level":"INFO","msg":"wandb-core"}
+{"time":"2026-05-01T13:23:34.673162742-04:00","level":"INFO","msg":"stream: starting","core version":"0.26.0"}
+{"time":"2026-05-01T13:23:34.881758161-04:00","level":"INFO","msg":"stream: created new stream","id":"y7irtfpw"}
+{"time":"2026-05-01T13:23:34.882206396-04:00","level":"INFO","msg":"stream: started"}
+{"time":"2026-05-01T13:23:34.882393515-04:00","level":"INFO","msg":"handler: started"}
+{"time":"2026-05-01T13:23:34.882417222-04:00","level":"INFO","msg":"writer: started","stream_id":"y7irtfpw"}
+{"time":"2026-05-01T13:23:34.882591008-04:00","level":"INFO","msg":"sender: started"}
+{"time":"2026-05-01T13:23:35.2115651-04:00","level":"ERROR","msg":"git repo not found","error":"repository does not exist"}
+{"time":"2026-05-01T13:23:35.3132224-04:00","level":"INFO","msg":"filestream: sending request","total_files":1,"console_offset":0,"console_lines":1}
+{"time":"2026-05-01T13:23:35.568005856-04:00","level":"INFO","msg":"filestream: request sent","status":"200 OK"}
+{"time":"2026-05-01T13:23:50.313579673-04:00","level":"INFO","msg":"filestream: sending request","total_files":2,"events_offset":0,"events_lines":1,"console_offset":1,"console_lines":12,"uploaded_len":3}
+{"time":"2026-05-01T13:23:50.533436426-04:00","level":"INFO","msg":"filestream: request sent","status":"200 OK"}
+{"time":"2026-05-01T13:23:53.989454392-04:00","level":"WARN","msg":"tensorboard: no root directory","error":"timed out after 10s"}
+{"time":"2026-05-01T13:23:53.989916627-04:00","level":"INFO","msg":"tensorboard: tracking new log directory","rootDir":{},"logDir":"LocalOrCloudPath(LocalPath=\"/home/ubuntu/f1tenth_rl/runs/multi_pp_2026-05-01_13-23-24/tensorboard/PPO_1\")","namespace":""}
+{"time":"2026-05-01T13:23:54.010365988-04:00","level":"INFO","msg":"tensorboard: saving file","fileLocation":"/home/ubuntu/f1tenth_rl/runs/multi_pp_2026-05-01_13-23-24/tensorboard/PPO_1/events.out.tfevents.1777656223.f1tenth.96373.0","runPath":"runs/multi_pp_2026-05-01_13-23-24/tensorboard/PPO_1/events.out.tfevents.1777656223.f1tenth.96373.0"}
+{"time":"2026-05-01T13:24:05.322689796-04:00","level":"INFO","msg":"filestream: sending request","total_files":4,"history_offset":0,"history_lines":3,"events_offset":1,"events_lines":1,"console_offset":12,"console_lines":11}
+{"time":"2026-05-01T13:24:05.569492154-04:00","level":"INFO","msg":"filestream: request sent","status":"200 OK"}
