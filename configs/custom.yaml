@@ -140,7 +140,7 @@ reward:
 
 algorithm:
   type: "ppo"
-  total_timesteps: 2_000_000
+  total_timesteps: 3_000_000
   ppo:
     learning_rate: 0.0003
     n_steps: 2048
