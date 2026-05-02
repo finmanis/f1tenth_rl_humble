@@ -54,8 +54,8 @@ env:
 
 # Random spawn: ego at a random track position, opponent slightly ahead
 spawn:
-  opponent_offset_min: 2.5    # minimum meters opponent starts ahead of ego
-  opponent_offset_max: 5.0   # maximum meters opponent starts ahead of ego
+  opponent_offset_min: 1.5    # minimum meters opponent starts ahead of ego
+  opponent_offset_max: 2.5   # maximum meters opponent starts ahead of ego
   initial_speed: 3.0          # m/s — both cars start at this velocity
   # Optional: constrain ego spawn to a circular region of the track.
   # Omit entirely for full-track random spawn.
@@ -98,9 +98,9 @@ action:
 reward:
   type: "custom"
   # --- Terminal rewards — sized at ~15-20% of a typical episode return (~3000) ---
-  collision_penalty: -1200.0     # ~17% of ideal episode; was -30 (too small at 1%)
+  collision_penalty: -2000.0     # ~17% of ideal episode; was -30 (too small at 1%)
   lap_bonus: 0.0
-  timeout_penalty: -50.0       # ~7% of ideal episode; was -20
+  timeout_penalty: -50.0        # ~7% of ideal episode; was -20
   survival_reward: 0.03
   steering_change_penalty: 0.5
   wall_proximity_penalty: 2.0
@@ -117,18 +117,19 @@ reward:
 
   # --- Hybrid Component Weights ---
   w_progress: 1.0               # Move forward along track
-  w_cth: 0.5                    # Stay on line and point forward
+  w_cth: 1.5                    # Stay on line and point forward
   w_speed: 0.3                  # Go fast
   w_relative: 0.8               # Be further ahead than the opponent (continuous overtake signal)
 
   # --- Sub-Component Tuning ---
   progress_weight: 10.0         # Internal multiplier for ProgressReward
-  heading_weight: 1.0           # Internal multiplier for CTH
-  crosstrack_weight: 0.3        # Internal multiplier for CTH
+  heading_weight: 6.0           # Internal multiplier for CTH
+  crosstrack_weight: 0.5        # Internal multiplier for CTH
   speed_weight: 0.3             # Internal multiplier for SpeedReward
 
   # --- Overtake Terminal Reward ---
-  overtake_bonus: 300.0         # ~17% of ideal episode; was 50
+  overtake_bonus: 600.0         # ~17% of ideal episode; was 50
+  overtake_margin: 3.0         # metres ego must be ahead of opponent to trigger overtake
 
   # --- Off-policy overrides (merged at runtime, PPO values untouched) ---
   sac_overrides:
@@ -146,7 +147,7 @@ reward:
 
 algorithm:
   type: "ppo"
-  total_timesteps: 500_000
+  total_timesteps: 1_000_000
   ppo:
     learning_rate: 0.0001
     n_steps: 2048
@@ -182,10 +183,10 @@ algorithm:
 network:
   type: "mlp"
   mlp:
-    hidden_sizes: [128, 128]
+    hidden_sizes: [256, 256]
     activation: "relu"
-  pi_layers: [64, 64]
-  vf_layers: [64, 64]
+  pi_layers: [256, 256]
+  vf_layers: [256, 256]
 
 domain_randomization:
   enabled: true
