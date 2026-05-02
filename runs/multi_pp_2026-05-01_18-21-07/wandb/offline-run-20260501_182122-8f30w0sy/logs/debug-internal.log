@@ -1,0 +1,20 @@
+{"time":"2026-05-01T18:21:22.286357026Z","level":"INFO","msg":"wandb-core"}
+{"time":"2026-05-01T18:21:22.286366401Z","level":"INFO","msg":"stream: starting","core version":"0.26.1"}
+{"time":"2026-05-01T18:21:22.388462785Z","level":"WARN","msg":"featurechecker: GraphQL client is nil, skipping feature loading"}
+{"time":"2026-05-01T18:21:22.388471243Z","level":"WARN","msg":"featurechecker: GraphQL client is nil, skipping feature loading"}
+{"time":"2026-05-01T18:21:22.388486201Z","level":"INFO","msg":"stream: created new stream","id":"8f30w0sy"}
+{"time":"2026-05-01T18:21:22.388540156Z","level":"INFO","msg":"stream: started"}
+{"time":"2026-05-01T18:21:22.388602236Z","level":"INFO","msg":"writer: started","stream_id":"8f30w0sy"}
+{"time":"2026-05-01T18:21:22.388631652Z","level":"INFO","msg":"handler: started"}
+{"time":"2026-05-01T18:21:22.388649859Z","level":"INFO","msg":"sender: started"}
+{"time":"2026-05-01T18:21:22.395796084Z","level":"WARN","msg":"featurechecker: GraphQL client is nil, skipping feature loading"}
+{"time":"2026-05-01T18:21:22.3958055Z","level":"WARN","msg":"runupserter: server does not expand metric globs but the x_server_side_expand_glob_metrics setting is set; ignoring"}
+{"time":"2026-05-01T18:21:22.397792776Z","level":"ERROR","msg":"git repo not found","error":"repository does not exist"}
+{"time":"2026-05-01T18:21:32.667910009Z","level":"WARN","msg":"tensorboard: no root directory","error":"timed out after 10s"}
+{"time":"2026-05-01T18:21:32.667965673Z","level":"INFO","msg":"tensorboard: tracking new log directory","rootDir":{},"logDir":"LocalOrCloudPath(LocalPath=\"/home/nvidia/roboracer_ws/src/f1tenth_rl_humble/runs/multi_pp_2026-05-01_18-21-07/tensorboard/PPO_1\")","namespace":""}
+{"time":"2026-05-01T18:21:32.668504354Z","level":"INFO","msg":"tensorboard: saving file","fileLocation":"/home/nvidia/roboracer_ws/src/f1tenth_rl_humble/runs/multi_pp_2026-05-01_18-21-07/tensorboard/PPO_1/events.out.tfevents.1777659682.nvidia.99813.0","runPath":"runs/multi_pp_2026-05-01_18-21-07/tensorboard/PPO_1/events.out.tfevents.1777659682.nvidia.99813.0"}
+{"time":"2026-05-01T19:55:05.797001153Z","level":"INFO","msg":"handler: operation stats","stats":{}}
+{"time":"2026-05-01T19:55:05.79981363Z","level":"INFO","msg":"stream: finishing up"}
+{"time":"2026-05-01T19:55:05.799827799Z","level":"INFO","msg":"handler: closed"}
+{"time":"2026-05-01T19:55:05.799867765Z","level":"INFO","msg":"sender: closed"}
+{"time":"2026-05-01T19:55:05.799872141Z","level":"INFO","msg":"stream: all finished"}

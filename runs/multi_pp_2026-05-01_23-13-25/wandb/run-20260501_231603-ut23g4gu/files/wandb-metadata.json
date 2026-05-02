@@ -1,0 +1,36 @@
+{
+  "os": "Linux-6.8.0-110-generic-aarch64-with-glibc2.35",
+  "python": "CPython 3.10.12",
+  "startedAt": "2026-05-01T23:16:03.275739Z",
+  "args": [
+    "--config",
+    "configs/custom.yaml",
+    "--size",
+    "medium",
+    "--opponent-line",
+    "random"
+  ],
+  "program": "/home/nvidia/roboracer_ws/src/f1tenth_rl_humble/scripts/train.py",
+  "codePath": "scripts/train.py",
+  "codePathLocal": "scripts/train.py",
+  "git": {
+    "remote": "https://github.com/finmanis/f1tenth_rl_humble.git",
+    "commit": "eb3c3c3815401dd5fac94d6cf52c933135814ed1"
+  },
+  "email": "rilkewong@gmail.com",
+  "root": "runs/multi_pp_2026-05-01_23-13-25",
+  "host": "nvidia",
+  "executable": "/home/nvidia/sim_ws/.venv/bin/python3",
+  "cpu_count": 4,
+  "cpu_count_logical": 4,
+  "disk": {
+    "/": {
+      "total": "37699944448",
+      "used": "34094784512"
+    }
+  },
+  "memory": {
+    "total": "8304562176"
+  },
+  "writerId": "cy31i1nguvuy95va8t9xk50b7uimb97h"
+}
