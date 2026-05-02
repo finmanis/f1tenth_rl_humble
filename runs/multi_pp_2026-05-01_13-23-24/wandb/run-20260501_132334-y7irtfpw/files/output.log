@@ -20,4 +20,26 @@ Logging to runs/multi_pp_2026-05-01_13-23-24/tensorboard/PPO_1
 |    time_elapsed    | 13       |
 |    total_timesteps | 8192     |
 ---------------------------------
-[2K[35m   0%[0m [38;5;237m━━━━━━━━━━━━━━━━━[0m [32m10,584/3,000,000 [0m [ [33m0:00:21[0m < [36m1:38:16[0m , [31m507 it/s[0m ]
+[2K-----------------------------------------━━[0m [32m16,336/3,000,000 [0m [ [33m0:00:35[0m < [36m2:03:04[0m , [31m404 it/s[0m ]
+| rollout/                |             |
+|    ep_len_mean          | 207         |
+|    ep_rew_mean          | -110        |
+| time/                   |             |
+|    fps                  | 443         |
+|    iterations           | 2           |
+|    time_elapsed         | 36          |
+|    total_timesteps      | 16384       |
+| train/                  |             |
+|    approx_kl            | 0.003682686 |
+|    clip_fraction        | 0.0165      |
+|    clip_range           | 0.2         |
+|    entropy_loss         | -2.85       |
+|    explained_variance   | -0.0186     |
+|    learning_rate        | 0.0003      |
+|    loss                 | 0.214       |
+|    n_updates            | 10          |
+|    policy_gradient_loss | -0.00205    |
+|    std                  | 1.01        |
+|    value_loss           | 1.48        |
+-----------------------------------------
+[2K[35m   1%[0m [38;5;237m━━━━━━━━━━━━━━━━━[0m [32m16,808/3,000,000 [0m [ [33m0:00:41[0m < [36m2:38:24[0m , [31m314 it/s[0m ]
