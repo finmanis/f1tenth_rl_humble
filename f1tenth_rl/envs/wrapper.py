@@ -433,7 +433,20 @@ class F1TenthWrapper(gym.Env):
             if self.current_opponent_line is not None else ego_wps
         n_opp = len(opp_wps)
 
-        ego_wp = int(self.np_random.integers(0, n_ego))
+        region = self.spawn_cfg.get("region", None)
+        if region:
+            cx = float(region["center_x"])
+            cy = float(region["center_y"])
+            r  = float(region.get("radius", 5.0))
+            d  = np.sqrt((ego_wps[:, 0] - cx) ** 2 + (ego_wps[:, 1] - cy) ** 2)
+            valid = np.where(d <= r)[0]
+            if len(valid) > 0:
+                ego_wp = int(self.np_random.choice(valid))
+            else:
+                print(f"[WARN] No waypoints within spawn region radius {r}m of ({cx},{cy}), spawning anywhere")
+                ego_wp = int(self.np_random.integers(0, n_ego))
+        else:
+            ego_wp = int(self.np_random.integers(0, n_ego))
 
         offset_m = float(self.np_random.uniform(
             self.spawn_cfg.get("opponent_offset_min", 3.0),
@@ -478,8 +491,10 @@ class F1TenthWrapper(gym.Env):
         return states
 
     def _check_overtake(self, flat_obs: Dict) -> bool:
-        """True if ego has passed the opponent by at least 0.5 m along the track."""
+        """True if ego has passed the opponent by at least 1.5m along the track."""
         if self.num_agents < 2 or self._track_cum_dist is None or self._overtake_done:
+            return False
+        if bool(flat_obs["collisions"][self.ego_idx]):
             return False
         opp_idx = 1 - self.ego_idx
         ego_d = self._get_track_dist(

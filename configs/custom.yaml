@@ -57,6 +57,12 @@ spawn:
   opponent_offset_min: 2.5    # minimum meters opponent starts ahead of ego
   opponent_offset_max: 5.0   # maximum meters opponent starts ahead of ego
   initial_speed: 3.0          # m/s — both cars start at this velocity
+  # Optional: constrain ego spawn to a circular region of the track.
+  # Omit entirely for full-track random spawn.
+  # region:
+  #   center_x: 13.4   # world metres — houston bottom-right (pixel ~520,150)
+  #   center_y: -3.3
+  #   radius: 5.0       # metres (~629/2000 houston waypoints in this radius)
 
 # Tell the framework to use a pure pursuit bot as the opponent
 multi_agent:
