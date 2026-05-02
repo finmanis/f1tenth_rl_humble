@@ -297,16 +297,20 @@ class F1TenthWrapper(gym.Env):
         self.spawn_cfg = config.get("spawn", {})
         self._overtake_bonus = config["reward"].get("overtake_bonus", 50.0)
 
-        # ---- Precompute cumulative track distances for overtake detection ----
+        # ---- Precompute cumulative track distances and headings for overtake detection ----
         if self.waypoints is not None:
             _wps = self.waypoints[:, :2]
             _diffs = np.diff(_wps, axis=0)
             _seg_lens = np.sqrt((_diffs ** 2).sum(axis=1))
             self._track_cum_dist = np.concatenate([[0], np.cumsum(_seg_lens)])
             self._track_total_len = float(self._track_cum_dist[-1])
+            # heading at each waypoint (forward direction of the track)
+            _headings = np.arctan2(_diffs[:, 1], _diffs[:, 0])
+            self._track_headings = np.append(_headings, _headings[-1])  # repeat last
         else:
             self._track_cum_dist = None
             self._track_total_len = 0.0
+            self._track_headings = None
 
         # ---- Episode state ----
         self.current_step = 0
@@ -496,10 +500,22 @@ class F1TenthWrapper(gym.Env):
             return False
         if bool(flat_obs["collisions"][self.ego_idx]):
             return False
+
+        ego_x = float(flat_obs["poses_x"][self.ego_idx])
+        ego_y = float(flat_obs["poses_y"][self.ego_idx])
+        ego_yaw = float(flat_obs["poses_theta"][self.ego_idx])
+
+        # Reject if ego is heading backwards along the track — prevents U-turn loops
+        # from aliasing to waypoints on the far side of the turn.
+        wps = self.waypoints[:, :2]
+        nearest_wp = int(np.argmin((wps[:, 0] - ego_x) ** 2 + (wps[:, 1] - ego_y) ** 2))
+        track_heading = self._track_headings[nearest_wp]
+        heading_diff = (ego_yaw - track_heading + np.pi) % (2 * np.pi) - np.pi
+        if abs(heading_diff) > np.pi / 3:  # more than 60° off — wrong direction
+            return False
+
         opp_idx = 1 - self.ego_idx
-        ego_d = self._get_track_dist(
-            float(flat_obs["poses_x"][self.ego_idx]), float(flat_obs["poses_y"][self.ego_idx])
-        )
+        ego_d = self._track_cum_dist[nearest_wp]
         opp_d = self._get_track_dist(
             float(flat_obs["poses_x"][opp_idx]), float(flat_obs["poses_y"][opp_idx])
         )

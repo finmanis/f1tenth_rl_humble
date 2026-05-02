@@ -287,6 +287,9 @@ def _load_map_image(map_path: str):
 
     yaml_path = map_path + ".yaml"
     if not os.path.exists(yaml_path):
+        # Some maps use <name>_map.yaml instead of <name>.yaml
+        yaml_path = map_path + "_map.yaml"
+    if not os.path.exists(yaml_path):
         return None, None
 
     with open(yaml_path) as f:
