@@ -19,3 +19,8 @@ config: {'experiment': {'name': 'multi_pp', 'seed': 42, 'device': 'auto', 'runs_
 2026-05-01 13:23:35,311 INFO    MainThread:96373 [wandb_init.py:init():1098] run started, returning control to user process
 2026-05-01 13:23:35,312 INFO    MainThread:96373 [wandb_run.py:_config_callback():1403] config_cb None None {'obs_dim': 112, 'act_dim': 2, 'num_envs': 4, 'run_dir': 'runs/multi_pp_2026-05-01_13-23-24'}
 2026-05-01 13:23:43,981 INFO    MainThread:96373 [wandb_run.py:_tensorboard_callback():1632] tensorboard callback: runs/multi_pp_2026-05-01_13-23-24/tensorboard/PPO_1, True
+2026-05-01 14:45:09,755 INFO    MainThread:96373 [wandb_run.py:_finish():2309] finishing run finnman-penn/f1tenth_rl/y7irtfpw
+2026-05-01 14:45:09,757 INFO    MainThread:96373 [wandb_run.py:_atexit_cleanup():2508] got exitcode: 0
+2026-05-01 14:45:09,759 INFO    MainThread:96373 [wandb_run.py:_restore():2490] restore
+2026-05-01 14:45:09,760 INFO    MainThread:96373 [wandb_run.py:_restore():2496] restore done
+2026-05-01 14:45:12,714 INFO    MainThread:96373 [wandb_run.py:_footer_sync_info():3886] logging synced files
