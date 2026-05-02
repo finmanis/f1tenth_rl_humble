@@ -59,10 +59,10 @@ spawn:
   initial_speed: 3.0          # m/s — both cars start at this velocity
   # Optional: constrain ego spawn to a circular region of the track.
   # Omit entirely for full-track random spawn.
-  # region:
-  #   center_x: 13.4   # world metres — houston bottom-right (pixel ~520,150)
-  #   center_y: -3.3
-  #   radius: 5.0       # metres (~629/2000 houston waypoints in this radius)
+  region:
+    center_x: 13.4   # world metres — houston bottom-right (pixel ~520,150)
+    center_y: -3.3
+    radius: 2.0       # metres
 
 # Tell the framework to use a pure pursuit bot as the opponent
 multi_agent:
