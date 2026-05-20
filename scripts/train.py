@@ -86,8 +86,10 @@ def parse_args():
                         choices=["mlp", "cnn1d"])
     parser.add_argument("--size", type=str, default=None,
                         choices=["tiny", "small", "medium", "large", "xlarge"],
-                        help="Model size preset: tiny=[64,64] small=[128,128] "
-                             "medium=[256,256] large=[512,512] xlarge=[1024,512,256]")
+                        help="Model size preset (shared extractor / heads): "
+                             "tiny=[64,64]/[32,32] small=[128,128]/[64,64] "
+                             "medium=[256,256]/[64,64] large=[512,512]/[128,128] "
+                             "xlarge=[1024,512,256]/[256,128]")
 
     # Features
     parser.add_argument("--domain-randomization", action="store_true")
@@ -171,17 +173,18 @@ def apply_overrides(config, args):
     if args.network:
         config["network"]["type"] = args.network
     if args.size:
+        # shared extractor → separate pi/vf heads (heads are intentionally smaller)
         SIZE_PRESETS = {
-            "tiny":   [64, 64],
-            "small":  [128, 128],
-            "medium": [256, 256],
-            "large":  [512, 512],
-            "xlarge": [1024, 512, 256],
+            "tiny":   {"hidden": [64, 64],        "heads": [32, 32]},
+            "small":  {"hidden": [128, 128],       "heads": [64, 64]},
+            "medium": {"hidden": [256, 256],       "heads": [64, 64]},
+            "large":  {"hidden": [512, 512],       "heads": [128, 128]},
+            "xlarge": {"hidden": [1024, 512, 256], "heads": [256, 128]},
         }
-        layers = SIZE_PRESETS[args.size]
-        config["network"]["pi_layers"] = layers
-        config["network"]["vf_layers"] = layers
-        config["network"]["mlp"]["hidden_sizes"] = layers
+        preset = SIZE_PRESETS[args.size]
+        config["network"]["mlp"]["hidden_sizes"] = preset["hidden"]
+        config["network"]["pi_layers"] = preset["heads"]
+        config["network"]["vf_layers"] = preset["heads"]
     if args.domain_randomization:
         config["domain_randomization"]["enabled"] = True
         if not config["domain_randomization"].get("mode"):

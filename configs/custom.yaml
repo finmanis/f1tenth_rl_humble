@@ -185,8 +185,8 @@ network:
   mlp:
     hidden_sizes: [256, 256]
     activation: "relu"
-  pi_layers: [256, 256]
-  vf_layers: [256, 256]
+  pi_layers: [64, 64]
+  vf_layers: [64, 64]
 
 domain_randomization:
   enabled: true

@@ -146,8 +146,15 @@ def evaluate_model(model_path, config, norm_path, args):
             episode_return += reward
             done = terminated or truncated
 
+            speed = info.get("ego_speed", 0)
+            steer = abs(info.get("physical_action", [0, 0])[0])
+
             speeds.append(info.get("ego_speed", 0))
             steers.append(abs(info.get("physical_action", [0, 0])[0]))
+
+            print("SPEED: ", speed)
+            print("STEER: ", steer)
+
 
             if record:
                 raw = info.get("raw_obs", {})
